@@ -18,11 +18,17 @@ A CrossScroll is a flutter Package that permits it’s child views to be scrolle
 <img src="https://img.shields.io/static/v1.svg?label=Pub&message=0.0.1&color=blue" >
 </a>
 <br /><br />
-[![Linkedin](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white) ](https://www.linkedin.com/in/mehran-ullah-742035153/)
+<a href="https://www.linkedin.com/in/mehran-ullah-742035153/">
+<img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" >
+</a>
 <br />
-[![Linkedin](https://img.shields.io/badge/WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white) ](https://www.linkedin.com/in/mehran-ullah-742035153/)
+<a href="#">
+<img src="https://img.shields.io/badge/WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white" >
+</a>
 <br />
-[![Linkedin](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white) ](https://mailto:m.jan9396@gmail.com)
+<a href="https://mailto:m.jan9396@gmail.com">
+<img src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white" >
+</a>
 
 
 ---
