@@ -29,10 +29,34 @@ A CrossScroll is a flutter Package that permits it’s child views to be scrolle
 TODO: List prerequisites and provide or point to information on how to
 start using the package.
 
-## Example
+## Widget Details
+`
+CrossScroll(
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
+      verticalBar: sc,
+      horizontalBar:sc ,
+      child: Column(
+        children: [
+          for (var i = 1; i < 11; i++)
+            Row(
+              children: [
+                for (var i = 1; i < 11; i++)
+                  Container(
+                    margin:const EdgeInsets.all(2),
+                    width: MediaQuery.of(context).size.width/2,
+                    height: MediaQuery.of(context).size.height/2,
+                    color: colors[random.nextInt(13).round().toInt()],
+                  ),
+              ],
+            )
+
+        ],
+      ),
+    )
+
+`
+
+## Example
 
 ```dart
 
@@ -66,7 +90,7 @@ class Example extends StatelessWidget {
   Widget build(BuildContext context) {
 
 
-    return CrossScrollNew(
+    return CrossScroll(
 
       verticalBar: sc,
       horizontalBar:sc ,
