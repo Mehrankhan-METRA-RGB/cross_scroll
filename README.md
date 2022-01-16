@@ -18,6 +18,9 @@ A CrossScroll is a flutter Package that permits it’s child views to be scrolle
 <img src="https://img.shields.io/static/v1.svg?label=Pub&message=0.0.1&color=blue" >
 </a>
 
+[![Linkedin](https://i.stack.imgur.com/gVE0j.png) LinkedIn](https://www.linkedin.com/in/mehran-ullah-742035153/)
+
+
 ---
 
 
