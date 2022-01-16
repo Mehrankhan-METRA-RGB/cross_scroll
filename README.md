@@ -1,7 +1,7 @@
 
 
 ##  Package
-- A CrossScroll is a flutter Package that permits it’s child views to be scrolled vertically and Horizontally. This is important because in many cases you need content to be scrolled on both side. 
+A CrossScroll is a flutter Package that permits it’s child views to be scrolled vertically and Horizontally. This is important because in many cases you need content to be scrolled on both side. 
 
 
 ### List of features
@@ -11,11 +11,18 @@
 - Support All feature `SingleChildScrollView` have.
 ## Tested Platform
 #### WEB
-- MicroSoft Edge
+
 ![cross_scroll web test](https://user-images.githubusercontent.com/73336909/149651423-d1dc936f-cfc0-4581-bb79-19e1fc4ec533.gif)
+- MicroSoft Edge
+
+
+
+
 #### Windows
-- Windows 10
+
 ![cross_scroll window test](https://user-images.githubusercontent.com/73336909/149651492-2ce542a7-7343-4651-81b1-d3eccf3f9bda.gif)
+- Windows 10
+
 
 ## Getting started
 
