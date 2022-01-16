@@ -2,4 +2,4 @@
 
 * TODO: Describe initial release.
 This is first beta version of cross axis scrolling package.
-  -Modified for Window,Web.
+  -Modified for Window and Web.

@@ -7,11 +7,10 @@ class CrossScrollStyle {
     this.padding,
     // this.primary,
     this.physics,
-    this.dragStartBehavior=DragStartBehavior.start,
-    this.clipBehavior=Clip.hardEdge,
+    this.dragStartBehavior = DragStartBehavior.start,
+    this.clipBehavior = Clip.hardEdge,
     this.restorationId,
-    this.keyboardDismissBehavior= ScrollViewKeyboardDismissBehavior.manual,
-
+    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
   });
   //
   // final bool reverse;
@@ -40,9 +39,6 @@ class CrossScrollStyle {
   /// The amount of space by which to inset the child.
   final EdgeInsetsGeometry? padding;
 
-
-
-
   /// How the scroll view should respond to user input.
   ///
   /// For example, determines how the scroll view continues to animate after the
@@ -50,7 +46,6 @@ class CrossScrollStyle {
   ///
   /// Defaults to matching platform conventions.
   final ScrollPhysics? physics;
-
 
   /// {@macro flutter.widgets.scrollable.dragStartBehavior}
   final DragStartBehavior dragStartBehavior;
@@ -65,5 +60,4 @@ class CrossScrollStyle {
 
   /// {@macro flutter.widgets.scroll_view.keyboardDismissBehavior}
   final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
-
 }

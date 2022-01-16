@@ -43,6 +43,7 @@ class CrossScroll extends StatefulWidget {
   final Widget? child;
   final CrossScrollStyle? verticalScroll;
   final CrossScrollStyle? horizontalScroll;
+
   /// An object that can be used to control the position to which this scroll
   /// view is scrolled.
   ///
@@ -57,6 +58,7 @@ class CrossScroll extends StatefulWidget {
   /// [ScrollController.animateTo]).
 
   final ScrollController? horizontalScrollController;
+
   /// An object that can be used to control the position to which this scroll
   /// view is scrolled.
   ///
@@ -69,7 +71,6 @@ class CrossScroll extends StatefulWidget {
   /// [ScrollController.keepScrollOffset]). It can be used to read the current
   /// scroll position (see [ScrollController.offset]), or change it (see
   /// [ScrollController.animateTo]).
-
 
   final ScrollController? verticalScrollController;
   final CrossScrollBar? verticalBar;
@@ -100,7 +101,7 @@ class _CrossScrollState extends State<CrossScroll> {
   bool _onHoverTrack = false;
 
   double? thumbCurrentPosition = 0;
-  double prevousWidth = 0;
+  double previousWidth = 0;
   double _viewport = 0;
   double _maxExtent = 0.1;
   double _thumbWidth = 55;
@@ -108,14 +109,14 @@ class _CrossScrollState extends State<CrossScroll> {
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
 
-    if (width != prevousWidth) {
+    if (width != previousWidth) {
       Future.delayed(Duration.zero, () {
         setState(() {
           initializeControllerValues();
           keepThumbInRangeWhileResizingScreen();
         });
       });
-      prevousWidth = width!;
+      previousWidth = width!;
     }
 
     CrossScrollBar? vBar = widget.verticalBar;
