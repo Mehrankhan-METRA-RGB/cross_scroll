@@ -9,6 +9,13 @@ A CrossScroll is a flutter Package that permits it’s child views to be scrolle
 - Support track onClick scrolls.
 - Support thumb Drag scrolls.
 - Support All feature `SingleChildScrollView` have.
+
+
+
+
+
+
+
 ## Tested Platform
 
 #### WEB
@@ -118,8 +125,7 @@ final CrossScrollBar _crossScrollBar= const CrossScrollBar(
   );
 
 ```
-
-
+\\\\\\\
 
 
 
