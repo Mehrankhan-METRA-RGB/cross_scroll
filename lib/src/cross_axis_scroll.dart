@@ -43,7 +43,34 @@ class CrossScroll extends StatefulWidget {
   final Widget? child;
   final CrossScrollStyle? verticalScroll;
   final CrossScrollStyle? horizontalScroll;
+  /// An object that can be used to control the position to which this scroll
+  /// view is scrolled.
+  ///
+  /// Must be null if [primary] is true.
+  ///
+  /// A [ScrollController] serves several purposes. It can be used to control
+  /// the initial scroll position (see [ScrollController.initialScrollOffset]).
+  /// It can be used to control whether the scroll view should automatically
+  /// save and restore its scroll position in the [PageStorage] (see
+  /// [ScrollController.keepScrollOffset]). It can be used to read the current
+  /// scroll position (see [ScrollController.offset]), or change it (see
+  /// [ScrollController.animateTo]).
+
   final ScrollController? horizontalScrollController;
+  /// An object that can be used to control the position to which this scroll
+  /// view is scrolled.
+  ///
+  /// Must be null if [primary] is true.
+  ///
+  /// A [ScrollController] serves several purposes. It can be used to control
+  /// the initial scroll position (see [ScrollController.initialScrollOffset]).
+  /// It can be used to control whether the scroll view should automatically
+  /// save and restore its scroll position in the [PageStorage] (see
+  /// [ScrollController.keepScrollOffset]). It can be used to read the current
+  /// scroll position (see [ScrollController.offset]), or change it (see
+  /// [ScrollController.animateTo]).
+
+
   final ScrollController? verticalScrollController;
   final CrossScrollBar? verticalBar;
   final CrossScrollBar? horizontalBar;
@@ -119,7 +146,7 @@ class _CrossScrollState extends State<CrossScroll> {
                   ScrollViewKeyboardDismissBehavior.manual,
               restorationId: vStyle?.restorationId,
               padding: vStyle?.padding,
-              primary: vStyle?.primary,
+              // primary: vStyle?.primary,
               physics: vStyle?.physics,
               scrollDirection: Axis.vertical,
               controller: verticalScrollController,
@@ -132,7 +159,7 @@ class _CrossScrollState extends State<CrossScroll> {
                     ScrollViewKeyboardDismissBehavior.manual,
                 restorationId: hStyle?.restorationId,
                 padding: hStyle?.padding,
-                primary: hStyle?.primary,
+                // primary: hStyle?.primary,
                 physics: hStyle?.physics,
                 scrollDirection: Axis.horizontal,
                 controller: horizontalScrollController,

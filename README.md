@@ -12,8 +12,10 @@ A CrossScroll is a flutter Package that permits it’s child views to be scrolle
 ## Tested Platform
 #### WEB
 
-![cross_scroll web test](https://user-images.githubusercontent.com/73336909/149651423-d1dc936f-cfc0-4581-bb79-19e1fc4ec533.gif)
 - MicroSoft Edge
+
+![cross_scroll web test](https://user-images.githubusercontent.com/73336909/149651423-d1dc936f-cfc0-4581-bb79-19e1fc4ec533.gif)
+
 
 
 
@@ -34,9 +36,10 @@ A CrossScroll is a flutter Package that permits it’s child views to be scrolle
 
 
 #### Windows
+- Windows 10
 
 ![cross_scroll window test](https://user-images.githubusercontent.com/73336909/149651492-2ce542a7-7343-4651-81b1-d3eccf3f9bda.gif)
-- Windows 10
+
 
 
 
@@ -76,6 +79,30 @@ CrossScroll(verticalBar: sc,
     )
 
 ```
+
+
+
+
+#### CrossScrollBar
+```dart
+final CrossScrollBar _crossScrollBar= const CrossScrollBar(
+  isAlwaysShown:true,
+  hoverThickness: 8,
+  thickness :8,
+  radius : Radius.elliptical(8, 8),
+  showTrackOnHover: true,
+  trackVisibility: false,
+);
+```
+
+#### CrossScrollStyle
+```dart
+
+
+```
+
+
+
 
 ## Example
 
