@@ -127,7 +127,7 @@ class _CrossScrollState extends State<CrossScroll> {
       body: Stack(
         children: [
           CustomCrossScrollBar(
-            controller: verticalScrollController,
+            controller: widget.verticalScrollController??verticalScrollController,
             isAlwaysShown: vBar?.isAlwaysShown,
             // interactive: vBar.interactive,
             trackVisibility: vBar?.trackVisibility,
@@ -150,7 +150,7 @@ class _CrossScrollState extends State<CrossScroll> {
               // primary: vStyle?.primary,
               physics: vStyle?.physics,
               scrollDirection: Axis.vertical,
-              controller: verticalScrollController,
+              controller: widget.verticalScrollController??verticalScrollController,
               child: SingleChildScrollView(
                 reverse: hStyle?.reverse ?? false,
                 clipBehavior: hStyle?.clipBehavior ?? Clip.hardEdge,
@@ -163,7 +163,7 @@ class _CrossScrollState extends State<CrossScroll> {
                 // primary: hStyle?.primary,
                 physics: hStyle?.physics,
                 scrollDirection: Axis.horizontal,
-                controller: horizontalScrollController,
+                controller:widget.horizontalScrollController?? horizontalScrollController,
                 child: widget.child ?? Container(),
               ),
             ),
