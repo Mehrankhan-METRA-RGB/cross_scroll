@@ -6,10 +6,11 @@ This package contains Multi-Axis scrolling features with scroll bar. The package
 ### List of features
 - If ScrollBar ```dart isAlwaysShown=true``` both horizontal and vertical scrollbars will be shown.
 - The vertical scrollbar wil not be hidden when the horizontal scrollbar reach to its to its max `extents` and vice versa
-
-![cs web test](https://user-images.githubusercontent.com/73336909/149651423-d1dc936f-cfc0-4581-bb79-19e1fc4ec533.gif)
-
-![cs window test](https://user-images.githubusercontent.com/73336909/149651492-2ce542a7-7343-4651-81b1-d3eccf3f9bda.gif)
+## Tested Platform
+#### WEB
+![cross_scroll web test](https://user-images.githubusercontent.com/73336909/149651423-d1dc936f-cfc0-4581-bb79-19e1fc4ec533.gif)
+#### Windows
+![cross_scroll window test](https://user-images.githubusercontent.com/73336909/149651492-2ce542a7-7343-4651-81b1-d3eccf3f9bda.gif)
 TODO: List what your package can do. Maybe include images, gifs, or videos.
 
 ## Getting started
