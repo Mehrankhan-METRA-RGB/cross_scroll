@@ -31,7 +31,7 @@
 ---
 
 
-##  Package
+# Package: Cross Scroll
 A CrossScroll is a flutter Package that permits it’s child views to be scrolled vertically and Horizontally. This is important because in many cases you need content to be scrolled on both side.
 
 
