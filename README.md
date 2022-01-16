@@ -1,26 +1,19 @@
 
 
 ##  Package
-A CrossScroll is a flutter Package that permits it’s child views to be scrolled vertically and Horizontally. This is important because in many cases you need content to be scrolled on both side. 
-
-
-
-
-
-
-
-
-
-
-
-[![Gitter](https://badges.gitter.im/METRA-IT/community.svg)](https://gitter.im/METRA-IT/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+A CrossScroll is a flutter Package that permits it’s child views to be scrolled vertically and Horizontally. This is important because in many cases you need content to be scrolled on both side.
+<p align="center"><a href="https://opensource.org/licenses/MIT">
+<img src="https://badges.gitter.im/METRA-IT/community.svg">
+</a>
+<a href="https://github.com/Mehrankhan-METRA-RGB/cross_scroll/actions">
+<img src="https://img.shields.io/badge/License-MIT-yellow.svg">
+</a>
 <a href="https://github.com/Mehrankhan-METRA-RGB/cross_scroll/actions">
 <img src="https://github.com/EdsonBueno/infinite_scroll_pagination/workflows/build/badge.svg">
 </a>
 <a href="https://github.com/Mehrankhan-METRA-RGB/cross_scroll">
 <img src="https://img.shields.io/badge/platform-flutter-ff69b4.svg" >
-</a>
+</a></p>
 
 ---
 
