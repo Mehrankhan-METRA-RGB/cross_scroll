@@ -1,7 +1,7 @@
 ![metra_logo_Modern](https://user-images.githubusercontent.com/73336909/149669809-2b0052ef-91ba-4ee7-af22-7e2d78ddd380.png)
 
 
-<br /><br />
+<br /><br /><p align=center>
 <a href="https://opensource.org/licenses/MIT">
 <img src="https://badges.gitter.im/METRA-IT/community.svg">
 </a>
@@ -25,7 +25,7 @@
 </a>
 <a href="https://mailto:m.jan9396@gmail.com">
 <img src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white" >
-</a>
+</a></p>
 
 
 ---
