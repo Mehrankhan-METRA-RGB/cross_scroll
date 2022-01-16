@@ -11,6 +11,7 @@ class CrossScrollStyle {
     this.clipBehavior=Clip.hardEdge,
     this.restorationId,
     this.keyboardDismissBehavior= ScrollViewKeyboardDismissBehavior.manual,
+
   });
   //
   // final bool reverse;
