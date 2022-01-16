@@ -3,6 +3,9 @@
 ##  Package cross_scroll
 This package contains Multi-Axis scrolling features with scroll bar. The package used two nested `SingleChildScrollView` in a background so it will accept only one `child`.
 
+A CrossScroll is a flutter Package that permits it’s child views to be scrolled vertically and Horizontally. This is important because in many cases you need content to be scrolled on both side. 
+
+With scr
 ### List of features
 - If ScrollBar ```dart isAlwaysShown=true``` both horizontal and vertical scrollbars will be shown.
 - The vertical scrollbar wil not be hidden when the horizontal scrollbar reach to its to its max `extents` and vice versa
