@@ -41,11 +41,12 @@ class Example extends StatelessWidget {
   ];
   @override
   Widget build(BuildContext context) {
-    CrossScrollBar sc= const CrossScrollBar(showTrackOnHover: false,trackVisibility: true,);
+    CrossScrollBar _crossScroll= const CrossScrollBar(showTrackOnHover: false,trackVisibility: true,);
 
     return CrossScroll(
-      verticalBar: sc,
-      horizontalBar:sc ,
+      verticalBar: _crossScroll,
+      horizontalBar:_crossScroll ,
+
       child: Column(
         children: [
           for (var i = 1; i < 20; i++)
@@ -60,12 +61,7 @@ class Example extends StatelessWidget {
                   ),
               ],
             )
-          // Container(
-          //           margin:const EdgeInsets.all(2),
-          //           width: 500,
-          //           height: 300,
-          //           color: colors[random.nextInt(9).round().toInt()],
-          //         ),
+
         ],
       ),
     );

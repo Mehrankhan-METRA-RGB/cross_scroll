@@ -76,7 +76,7 @@ class CrossScroll extends StatefulWidget {
   final CrossScrollBar? verticalBar;
   final CrossScrollBar? horizontalBar;
 
-  ///when you hovered over a thumb
+  ///Shown this color when you hovered over a thumb
   final Color? hoverColor;
 
   ///Normal thumb color
@@ -127,7 +127,8 @@ class _CrossScrollState extends State<CrossScroll> {
       body: Stack(
         children: [
           CustomCrossScrollBar(
-            controller: widget.verticalScrollController??verticalScrollController,
+            controller:
+                widget.verticalScrollController ?? verticalScrollController,
             isAlwaysShown: vBar?.isAlwaysShown,
             // interactive: vBar.interactive,
             trackVisibility: vBar?.trackVisibility,
@@ -150,7 +151,8 @@ class _CrossScrollState extends State<CrossScroll> {
               // primary: vStyle?.primary,
               physics: vStyle?.physics,
               scrollDirection: Axis.vertical,
-              controller: widget.verticalScrollController??verticalScrollController,
+              controller:
+                  widget.verticalScrollController ?? verticalScrollController,
               child: SingleChildScrollView(
                 reverse: hStyle?.reverse ?? false,
                 clipBehavior: hStyle?.clipBehavior ?? Clip.hardEdge,
@@ -163,7 +165,8 @@ class _CrossScrollState extends State<CrossScroll> {
                 // primary: hStyle?.primary,
                 physics: hStyle?.physics,
                 scrollDirection: Axis.horizontal,
-                controller:widget.horizontalScrollController?? horizontalScrollController,
+                controller: widget.horizontalScrollController ??
+                    horizontalScrollController,
                 child: widget.child ?? Container(),
               ),
             ),
