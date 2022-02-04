@@ -9,7 +9,7 @@ homepage: https://github.com/Mehrankhan-METRA-RGB/cross_scroll
 
 
 environment:
-  sdk: ">=2.15.0 <3.0.0"
+  sdk: ">=2.16.0-80.1.beta <3.0.0"
   flutter: ">=1.17.0"
 
 dependencies:
@@ -20,5 +20,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^1.0.0
+  analyzer: ^3.2.0
+  lints: ^1.0.1
+
 
 flutter:
