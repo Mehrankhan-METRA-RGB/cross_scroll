@@ -1,10 +1,14 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'cross_scroll_bar.dart';
 import 'cross_scroll_decor.dart';
+
+///This code has been design by [Mehran Ullah]
+///email: m.jan9396@gmail.com, m.jan9396@hotmail.com
 
 // class Thumb {
 //   Thumb({this.currentPosition, this.visibility = true, this.thumbWidth});
@@ -14,6 +18,14 @@ import 'cross_scroll_decor.dart';
 // }
 
 class CrossScroll extends StatefulWidget {
+  ///CrossScroll is a Widget that can scroll on multiple directions and
+  ///support all properties of [SingleChildScrollView].
+  ///Keep [isAlwaysShown:true] while design for Android or IOS so you will
+  ///be able to see your thumb position on screen while scrolling with onDrag property
+  ///i.e: CrossScrollBar(
+  ///         showTrackOnHover: false,
+  ///         trackVisibility: false,
+  ///         isAlwaysShown: true),
   const CrossScroll(
       {this.child,
       this.verticalScroll,
@@ -41,8 +53,12 @@ class CrossScroll extends StatefulWidget {
       Key? key})
       : super(key: key);
   final Widget? child;
-  final CrossScrollStyle? verticalScroll;
-  final CrossScrollStyle? horizontalScroll;
+
+  ///Modify vertical scrolls
+  final CrossScrollDesign? verticalScroll;
+
+  ///Modify horizontal scrolls
+  final CrossScrollDesign? horizontalScroll;
 
   /// An object that can be used to control the position to which this scroll
   /// view is scrolled.
@@ -73,13 +89,19 @@ class CrossScroll extends StatefulWidget {
   /// [ScrollController.animateTo]).
 
   final ScrollController? verticalScrollController;
+
+  ///Modify Vertical scroll thumb and track
   final CrossScrollBar? verticalBar;
+
+  ///Modify horizontal scroll thumb and track
   final CrossScrollBar? horizontalBar;
 
   ///Shown this color when you hovered over a thumb
   final Color? hoverColor;
 
   ///Normal thumb color
+  ///By default it will get Theme.highlightColor in Android and IOS
+  ///
   final Color? idleColor;
 
   @override
@@ -105,10 +127,46 @@ class _CrossScrollState extends State<CrossScroll> {
   double _viewport = 0;
   double _maxExtent = 0.1;
   double _thumbWidth = 55;
+
+  ///This method update thumb position while scrolling,
+  /// Platforms [Android and IOS]
+  updateThumbPositionWithScroll() {
+    setState(() {
+      thumbCurrentPosition = horizontalScrollController.offset / ratio;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Platform.isAndroid || Platform.isIOS
+        ? widget.horizontalScrollController != null
+            ? widget.horizontalScrollController
+                ?.addListener(() => updateThumbPositionWithScroll())
+            : horizontalScrollController
+                .addListener(() => updateThumbPositionWithScroll())
+        : null;
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    Platform.isAndroid || Platform.isIOS
+        ? horizontalScrollController.dispose()
+        : null;
+  }
+
   @override
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
+    // setState(() {
+    //   print(horizontalScrollController.offset-_thumbSize);
+    //
+    // });
 
+// thumbCurrentPosition=widget.horizontalScrollController?.offset??horizontalScrollController.offset;
     if (width != previousWidth) {
       Future.delayed(Duration.zero, () {
         setState(() {
@@ -120,9 +178,9 @@ class _CrossScrollState extends State<CrossScroll> {
     }
 
     CrossScrollBar? vBar = widget.verticalBar;
-    CrossScrollStyle? vStyle = widget.verticalScroll;
+    CrossScrollDesign? vStyle = widget.verticalScroll;
     CrossScrollBar? hBar = widget.horizontalBar;
-    CrossScrollStyle? hStyle = widget.horizontalScroll;
+    CrossScrollDesign? hStyle = widget.horizontalScroll;
     return Scaffold(
       body: Stack(
         children: [
@@ -226,9 +284,9 @@ class _CrossScrollState extends State<CrossScroll> {
           : false;
 
   void _onDrag(DragUpdateDetails a) {
-    if (kDebugMode) {
-      print('thumbCurrentPosition: ${thumbCurrentPosition!}');
-    }
+    // if (kDebugMode) {
+    //   // print('thumbCurrentPosition: ${thumbCurrentPosition!}');
+    // }
     setState(() {
       if (0 <= thumbCurrentPosition! &&
           thumbCurrentPosition! <= viewPort - _thumbSize) {
@@ -236,9 +294,9 @@ class _CrossScrollState extends State<CrossScroll> {
         if (thumbCurrentPosition! != 0 ||
             thumbCurrentPosition! != viewPort - _thumbSize) {
           horizontalScrollController.jumpTo(thumbCurrentPosition! * ratio);
-          if (kDebugMode) {
-            print('Jumpto:${thumbCurrentPosition! * ratio}');
-          }
+          // if (kDebugMode) {
+          //   print('JumpTo:${thumbCurrentPosition! * ratio}');
+          // }
         }
       }
       if (0 > thumbCurrentPosition!) {
@@ -279,7 +337,7 @@ class _CrossScrollState extends State<CrossScroll> {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: _thumbRadius(bar: thumb, hover: _onHoverTrack),
-                  color: _thumbColor(bar: thumb, hover: _onHoverTrack),
+                  color: _thumbColorNew(bar: thumb, hover: _onHoverTrack),
                 ),
               ),
             ),
@@ -408,12 +466,63 @@ class _CrossScrollState extends State<CrossScroll> {
               : color = const Color(0x00111111);
     } else {
       hover
-          ? color = fullColor
 
           ///Show Thumb Full Color on Hover
-          : color = const Color(0x00111111);
+          ? color = fullColor
 
-      ///Don't show Thumb when not Hovered
+          ///Don't show Thumb when not Hovered
+          : color = const Color(0x00111111);
+    }
+    return color;
+  }
+
+  Color _thumbColorNew({
+    required CrossScrollBar bar,
+    required bool hover,
+    Color fullColor = const Color.fromARGB(239, 16, 16, 16),
+    // Color middleColor = const Color.fromARGB(155, 17, 17, 17),
+  }) {
+    bool trackVisibility = bar.trackVisibility ?? false;
+
+    Color? color;
+    if (bar.isAlwaysShown != null) {
+      bar.isAlwaysShown!
+          ? trackVisibility
+              ?
+
+              ///When [trackVisibility] is true
+              ///The hover will be ignored
+
+              color = widget.hoverColor ?? fullColor
+              :
+
+              ///When [trackVisibility] is false
+              hover
+
+                  ///Show Thumb Full Color on Hover when [isAlwaysShown]  is true
+                  ? color = widget.hoverColor ?? fullColor
+
+                  ///Show Half Color When not Hovered when [isAlwaysShown]  is true
+                  : Platform.isAndroid || Platform.isIOS
+                      ? color = widget.idleColor ??
+                          Theme.of(context).highlightColor.withOpacity(0.9)
+                      : color = widget.idleColor ??
+                          const Color.fromARGB(118, 17, 17, 17)
+          : hover
+
+              ///Show Thumb Full Color on Hover when [isAlwaysShown]  is false
+              ? color = widget.hoverColor ?? fullColor
+
+              ///Don't show Thumb when not Hovered
+              : color = const Color(0x00111111);
+    } else {
+      hover
+
+          ///Show Thumb Full Color on Hover
+          ? color = fullColor
+
+          ///Don't show Thumb when not Hovered
+          : color = const Color(0x00111111);
     }
     return color;
   }
@@ -437,8 +546,6 @@ class _CrossScrollState extends State<CrossScroll> {
               ),
               curve: Curves.linear);
         } else {
-          // print('+ive\ngreater than _viewport - _thumbWidth');
-
           thumbCurrentPosition = _viewport - _thumbWidth;
           horizontalScrollController.animateTo(thumbCurrentPosition! * ratio,
               duration: const Duration(

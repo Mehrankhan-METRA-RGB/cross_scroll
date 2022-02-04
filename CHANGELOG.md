@@ -5,3 +5,8 @@ This is first beta version of cross axis scrolling package.
   -Modified for Window and Web.
 ## 0.0.2
 * TODO: Fixed import issue
+
+## 0.0.3
+* TODO: 
+- Tested on IOS - IPHONE 13 - 15.2
+- Provided an example 

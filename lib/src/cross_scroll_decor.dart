@@ -1,8 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-class CrossScrollStyle {
-  CrossScrollStyle({
+class CrossScrollDesign {
+  CrossScrollDesign({
     this.reverse = false,
     this.padding,
     // this.primary,
