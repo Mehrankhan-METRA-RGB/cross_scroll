@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-
 import 'cross_scroll_bar.dart';
 import 'cross_scroll_decor.dart';
 
@@ -139,24 +138,20 @@ class _CrossScrollState extends State<CrossScroll> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Platform.isAndroid || Platform.isIOS
-        ? widget.horizontalScrollController != null
-            ? widget.horizontalScrollController
-                ?.addListener(() => updateThumbPositionWithScroll())
-            : horizontalScrollController
-                .addListener(() => updateThumbPositionWithScroll())
-        : null;
+    widget.horizontalScrollController != null
+        ? widget.horizontalScrollController
+            ?.addListener(() => updateThumbPositionWithScroll())
+        : horizontalScrollController
+            .addListener(() => updateThumbPositionWithScroll());
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    Platform.isAndroid || Platform.isIOS
-        ? widget.horizontalScrollController != null
-            ? widget.horizontalScrollController?.dispose()
-            : horizontalScrollController.dispose()
-        : null;
+    widget.horizontalScrollController != null
+        ? widget.horizontalScrollController?.dispose()
+        : horizontalScrollController.dispose();
   }
 
   @override
@@ -456,8 +451,14 @@ class _CrossScrollState extends State<CrossScroll> {
                   ? color = widget.hoverColor ?? fullColor
 
                   ///Show Half Color When not Hovered when [isAlwaysShown]  is true
-                  : color = widget.idleColor ??
-                      Theme.of(context).highlightColor.withOpacity(0.9)
+                  : kIsWeb
+                      ? color = widget.idleColor ??
+                          const Color.fromARGB(118, 17, 17, 17)
+                      : Platform.isAndroid
+                          ? color = widget.idleColor ??
+                              Theme.of(context).highlightColor.withOpacity(0.9)
+                          : color = widget.idleColor ??
+                              const Color.fromARGB(118, 17, 17, 17)
           : hover
 
               ///Show Thumb Full Color on Hover when [isAlwaysShown]  is false

@@ -15,3 +15,7 @@ This is first beta version of cross axis scrolling package.
 ## 0.0.4
 * TODO:
 Removed unidentified errors
+
+## 0.0.5
+* TODO:
+  Unsupported Web error solved
