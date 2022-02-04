@@ -11,3 +11,7 @@ This is first beta version of cross axis scrolling package.
 - Tested on IOS - IPHONE 13 - 15.2
 - Tested on Android 11 - Samsung A32
 - Provided an example 
+
+## 0.0.4
+* TODO:
+Removed unidentified errors
