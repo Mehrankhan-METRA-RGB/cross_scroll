@@ -100,8 +100,7 @@ class CrossScroll extends StatefulWidget {
   final Color? hoverColor;
 
   ///Normal thumb color
-  ///By default it will get Theme.highlightColor in Android and IOS
-  ///
+  ///By default it will get [Theme.of(context).highlightColor.withOpacity(0.9)]
   final Color? idleColor;
 
   @override
@@ -337,7 +336,7 @@ class _CrossScrollState extends State<CrossScroll> {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: _thumbRadius(bar: thumb, hover: _onHoverTrack),
-                  color: _thumbColorNew(bar: thumb, hover: _onHoverTrack),
+                  color: _thumbColor(bar: thumb, hover: _onHoverTrack),
                 ),
               ),
             ),
@@ -455,8 +454,8 @@ class _CrossScrollState extends State<CrossScroll> {
                   ? color = widget.hoverColor ?? fullColor
 
                   ///Show Half Color When not Hovered when [isAlwaysShown]  is true
-                  : color =
-                      widget.idleColor ?? const Color.fromARGB(118, 17, 17, 17)
+                  : color = widget.idleColor ??
+                  Theme.of(context).highlightColor.withOpacity(0.9)
           : hover
 
               ///Show Thumb Full Color on Hover when [isAlwaysShown]  is false
@@ -476,56 +475,56 @@ class _CrossScrollState extends State<CrossScroll> {
     return color;
   }
 
-  Color _thumbColorNew({
-    required CrossScrollBar bar,
-    required bool hover,
-    Color fullColor = const Color.fromARGB(239, 16, 16, 16),
-    // Color middleColor = const Color.fromARGB(155, 17, 17, 17),
-  }) {
-    bool trackVisibility = bar.trackVisibility ?? false;
-
-    Color? color;
-    if (bar.isAlwaysShown != null) {
-      bar.isAlwaysShown!
-          ? trackVisibility
-              ?
-
-              ///When [trackVisibility] is true
-              ///The hover will be ignored
-
-              color = widget.hoverColor ?? fullColor
-              :
-
-              ///When [trackVisibility] is false
-              hover
-
-                  ///Show Thumb Full Color on Hover when [isAlwaysShown]  is true
-                  ? color = widget.hoverColor ?? fullColor
-
-                  ///Show Half Color When not Hovered when [isAlwaysShown]  is true
-                  : Platform.isAndroid || Platform.isIOS
-                      ? color = widget.idleColor ??
-                          Theme.of(context).highlightColor.withOpacity(0.9)
-                      : color = widget.idleColor ??
-                          const Color.fromARGB(118, 17, 17, 17)
-          : hover
-
-              ///Show Thumb Full Color on Hover when [isAlwaysShown]  is false
-              ? color = widget.hoverColor ?? fullColor
-
-              ///Don't show Thumb when not Hovered
-              : color = const Color(0x00111111);
-    } else {
-      hover
-
-          ///Show Thumb Full Color on Hover
-          ? color = fullColor
-
-          ///Don't show Thumb when not Hovered
-          : color = const Color(0x00111111);
-    }
-    return color;
-  }
+  // Color _thumbColorNew({
+  //   required CrossScrollBar bar,
+  //   required bool hover,
+  //   Color fullColor = const Color.fromARGB(239, 16, 16, 16),
+  //   // Color middleColor = const Color.fromARGB(155, 17, 17, 17),
+  // }) {
+  //   bool trackVisibility = bar.trackVisibility ?? false;
+  //
+  //   Color? color;
+  //   if (bar.isAlwaysShown != null) {
+  //     bar.isAlwaysShown!
+  //         ? trackVisibility
+  //             ?
+  //
+  //             ///When [trackVisibility] is true
+  //             ///The hover will be ignored
+  //
+  //             color = widget.hoverColor ?? fullColor
+  //             :
+  //
+  //             ///When [trackVisibility] is false
+  //             hover
+  //
+  //                 ///Show Thumb Full Color on Hover when [isAlwaysShown]  is true
+  //                 ? color = widget.hoverColor ?? fullColor
+  //
+  //                 ///Show Half Color When not Hovered when [isAlwaysShown]  is true
+  //                 : Platform.isAndroid || Platform.isIOS
+  //                     ? color = widget.idleColor ??
+  //                         Theme.of(context).highlightColor.withOpacity(0.9)
+  //                     : color = widget.idleColor ??
+  //                         const Color.fromARGB(118, 17, 17, 17)
+  //         : hover
+  //
+  //             ///Show Thumb Full Color on Hover when [isAlwaysShown]  is false
+  //             ? color = widget.hoverColor ?? fullColor
+  //
+  //             ///Don't show Thumb when not Hovered
+  //             : color = const Color(0x00111111);
+  //   } else {
+  //     hover
+  //
+  //         ///Show Thumb Full Color on Hover
+  //         ? color = fullColor
+  //
+  //         ///Don't show Thumb when not Hovered
+  //         : color = const Color(0x00111111);
+  //   }
+  //   return color;
+  // }
 
   void onTrackClick(TapDownDetails tapDownDetails) {
     if (kDebugMode) {
