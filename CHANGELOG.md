@@ -19,3 +19,7 @@ Removed unidentified errors
 ## 0.0.5
 * TODO:
   Unsupported Web error solved
+
+## 0.0.6
+* TODO:
+  dependency changed back to 2.16.0-80.1.beta
