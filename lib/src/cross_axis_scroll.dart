@@ -153,7 +153,9 @@ class _CrossScrollState extends State<CrossScroll> {
     // TODO: implement dispose
     super.dispose();
     Platform.isAndroid || Platform.isIOS
-        ? horizontalScrollController.dispose()
+        ? widget.horizontalScrollController != null
+            ? widget.horizontalScrollController?.dispose()
+            : horizontalScrollController.dispose()
         : null;
   }
 
@@ -455,7 +457,7 @@ class _CrossScrollState extends State<CrossScroll> {
 
                   ///Show Half Color When not Hovered when [isAlwaysShown]  is true
                   : color = widget.idleColor ??
-                  Theme.of(context).highlightColor.withOpacity(0.9)
+                      Theme.of(context).highlightColor.withOpacity(0.9)
           : hover
 
               ///Show Thumb Full Color on Hover when [isAlwaysShown]  is false

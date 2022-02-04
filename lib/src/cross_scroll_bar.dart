@@ -1,15 +1,6 @@
-// Copyright 2014 The Flutter Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-
-// import 'color_scheme.dart';
-// import 'material_state.dart';
-// import 'scrollbar_theme.dart';
-// import 'theme.dart';
 
 const double _kScrollbarThickness = 8.0;
 const double _kScrollbarThicknessWithTrack = 12.0;
