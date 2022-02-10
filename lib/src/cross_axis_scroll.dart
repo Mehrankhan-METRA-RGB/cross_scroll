@@ -239,7 +239,6 @@ class _CrossScrollState extends State<CrossScroll> {
                   bar: hBar!,
                   orientation: Axis.horizontal,
                 ),
-          // _track(bar: hBar!, orientation: Axis.horizontal),
 
           ///Horizontal scroll thumb
           _horizontalViewPort == _horizontalMaxExtent
@@ -274,6 +273,7 @@ class _CrossScrollState extends State<CrossScroll> {
 
   /// get  ratio by fullSize/(visibleSize-thumbSize)
   double ratio(Axis orientation) {
+
     ScrollController? controller;
     if (orientation == Axis.horizontal) {
       controller =
