@@ -31,4 +31,8 @@ Removed unidentified errors
   - Smoothness improved
   - improved package score
   - tested on macOS-WEB
+
+## 0.0.75
+* TODO:
+  -Modify example for 0.0.7 in README.md
   
