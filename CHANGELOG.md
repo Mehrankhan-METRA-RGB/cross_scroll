@@ -23,3 +23,12 @@ Removed unidentified errors
 ## 0.0.6
 * TODO:
   dependency changed back to 2.16.0-80.1.beta
+
+## 0.0.7
+* TODO:
+  - Removed flutter Scrollbars
+  - Added new Custom ScrollBars
+  - Smoothness improved
+  - improved package score
+  - tested on macOS-WEB
+  

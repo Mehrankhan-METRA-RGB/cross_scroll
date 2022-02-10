@@ -55,7 +55,10 @@ A CrossScroll is a flutter Package that permits it’s child views to be scrolle
 - MicroSoft Edge
 
 ![cross_scroll web test](https://user-images.githubusercontent.com/73336909/149651423-d1dc936f-cfc0-4581-bb79-19e1fc4ec533.gif)
-
+<br />
+<br />
+- MacOS-Chrome
+![mac-web-test](https://user-images.githubusercontent.com/73336909/153384605-351a569e-ddbe-452d-a256-81af2b1dbbe3.gif)
 
 
 

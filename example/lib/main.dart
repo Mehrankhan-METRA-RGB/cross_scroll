@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:cross_scroll/cross_scroll.dart';
 import 'package:flutter/material.dart';
 
@@ -26,42 +25,35 @@ class MyApp extends StatelessWidget {
 class Example extends StatelessWidget {
   Example({Key? key}) : super(key: key);
   final random = Random();
-
-  ///Box colors
-  final List<Color> colors = const [
-    Color(0xdfde2929),
-    Color(0xdfe0c919),
-    Color(0xfd3cd506),
-    Color(0xdfaf08ba),
-    Color(0xffdc0e79),
-    Color(0xf80bdbab),
-    Color(0xff0b32c2),
-    Color(0xfad7a306),
-    Color(0xdf0877b3),
-    Color(0xdf5d0ce7),
-  ];
   @override
   Widget build(BuildContext context) {
-    CrossScrollBar _crossScroll = const CrossScrollBar(
-        showTrackOnHover: false, trackVisibility: false, isAlwaysShown: true);
 
     return CrossScroll(
-      ///Normal color of thumb
-      // idleColor: Colors.black54,
-      verticalBar: _crossScroll,
-      horizontalBar: _crossScroll,
-      child: Column(
+      ///Optional
+      // normalColor: Colors.blue,
+      ///Optional
+      // hoverColor: Colors.red,
+      ///Optional
+      // dimColor: Colors.red.withOpacity(0.4),
+      ///design track and thumb
+      // verticalBar: const CrossScrollBar(),
+      // horizontalBar: const CrossScrollBar(),
+
+      child:
+      Column(
         children: [
           for (var i = 1; i < 20; i++)
             Row(
               children: [
                 for (var i = 1; i < 20; i++)
                   Container(
-                    margin: const EdgeInsets.all(2),
-                    width: 500,
-                    height: 300,
-                    color: colors[random.nextInt(9).round().toInt()],
-                  ),
+                      margin: const EdgeInsets.all(2),
+                      width: 500,
+                      height: 300,
+                      ///get random color for container
+                      color: Color.fromARGB(255, random.nextInt(255),
+                          random.nextInt(255), random.nextInt(255))
+                      ),
               ],
             )
         ],
