@@ -211,7 +211,7 @@ class _NewCrossScrollState extends State<NewCrossScroll> {
   /// Platforms [Android and IOS]
   updateThumbPositionWithScroll(Axis orientation) {
     ScrollController controller = getController(orientation);
-    print(controller.position.pixels);
+    // print(controller.position.pixels);
     // setState(() {
     if (orientation == Axis.horizontal) {
       horizontalThumbCurrentPosition.value =
@@ -489,7 +489,7 @@ class _NewCrossScrollState extends State<NewCrossScroll> {
 
   void onTrackClick(TapDownDetails tapDownDetails,
       {required Axis orientation}) {
-    print(tapDownDetails.localPosition.dy);
+    // print(tapDownDetails.localPosition.dy);
     // print(verticalThumbCurrentPosition);
     // print(_verticalThumbWidth);
 

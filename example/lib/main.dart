@@ -30,7 +30,7 @@ class Example extends StatelessWidget {
   final random = Random();
   @override
   Widget build(BuildContext context) {
-    return NewCrossScroll(
+    return CrossScroll(
       ///Optional
       // normalColor: Colors.blue,
       ///Optional
@@ -62,54 +62,3 @@ class Example extends StatelessWidget {
     );
   }
 }
-
-// class MyWidget extends StatelessWidget {
-//   const MyWidget({super.key});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     bool _isExpanded = false;
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('Expanded Container'),
-//       ),
-//       body: LayoutBuilder(builder: (context, constraints) {
-//         return CrossScroll(
-//           child: StatefulBuilder(builder: (context, setState) {
-//             return Column(
-//               children: [
-//                 GestureDetector(
-//                   onTap: () {
-//                     setState(() {
-//                       _isExpanded = !_isExpanded;
-//                     });
-//                   },
-//                   child: Container(
-//                     width: _isExpanded
-//                         ? constraints.maxWidth * 1.2
-//                         : constraints.maxWidth,
-//                     height: _isExpanded
-//                         ? constraints.maxHeight * 1.2
-//                         : constraints.maxHeight * 0.5,
-//                     color: Colors.blue,
-//                     child: Center(
-//                       child: Text(
-//                         _isExpanded
-//                             ? 'you will not see scrollBar --->'
-//                             : 'Tap to Expand',
-//                         style: const TextStyle(
-//                           fontSize: 30,
-//                           color: Colors.black,
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                 ),
-//               ],
-//             );
-//           }),
-//         );
-//       }),
-//     );
-//   }
-// }
