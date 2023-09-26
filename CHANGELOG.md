@@ -36,7 +36,7 @@ Removed unidentified errors
 * TODO:
   -Modify example for 0.0.7 in README.md
 
-## 0.0.75
+## 0.0.76
 * TODO:
   - When a child widget is updated and its size exceeds that of the normal device size, you will now observe the scroll thumb updating accordingly.
   - New Scroll Widgets is coming soon
