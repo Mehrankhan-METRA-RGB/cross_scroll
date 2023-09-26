@@ -1,7 +1,6 @@
 publish_to: 'https://pub.dev'
 name: cross_scroll
 description: A CrossScroll is a flutter Package that permits it’s child views to be scrolled vertically and Horizontally.
-
 version: 0.0.76
 homepage: https://github.com/Mehrankhan-METRA-RGB/cross_scroll
 repository: https://github.com/Mehrankhan-METRA-RGB/cross_scroll
