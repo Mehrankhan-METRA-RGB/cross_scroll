@@ -1,36 +1,63 @@
-![metra_logo_Modern](https://user-images.githubusercontent.com/73336909/149669809-2b0052ef-91ba-4ee7-af22-7e2d78ddd380.png)
+[//]: # (![metra_logo_Modern]&#40;https://user-images.githubusercontent.com/73336909/149669809-2b0052ef-91ba-4ee7-af22-7e2d78ddd380.png&#41;)
 
 
-<br /><br /><p align=center>
-<a href="https://opensource.org/licenses/MIT">
-<img src="https://badges.gitter.im/METRA-IT/community.svg">
-</a>
-<a href="https://github.com/Mehrankhan-METRA-RGB/cross_scroll/actions">
-<img src="https://img.shields.io/badge/License-MIT-yellow.svg">
-</a>
-<a href="https://github.com/Mehrankhan-METRA-RGB/cross_scroll/actions">
-<img src="https://github.com/EdsonBueno/infinite_scroll_pagination/workflows/build/badge.svg">
-</a>
-<a href="https://github.com/Mehrankhan-METRA-RGB/cross_scroll">
-<img src="https://img.shields.io/badge/platform-flutter-ff69b4.svg" >
-</a><a href="https://github.com/Mehrankhan-METRA-RGB/cross_scroll">
-<img src="https://img.shields.io/static/v1.svg?label=Pub&message=0.0.75&color=blue" >
-</a>
-<br /><br />
-<a href="https://www.linkedin.com/in/mehran-ullah-742035153/">
-<img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" >
-</a>
-<a href="#">
-<img src="https://img.shields.io/badge/WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white" >
-</a>
-<a href="https://mailto:m.jan9396@gmail.com">
-<img src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white" >
-</a></p>
+[//]: # (<br /><br /><p align=center>)
+
+[//]: # (<a href="https://opensource.org/licenses/MIT">)
+
+[//]: # (<img src="https://badges.gitter.im/METRA-IT/community.svg">)
+
+[//]: # (</a>)
+
+[//]: # (<a href="https://github.com/Mehrankhan-METRA-RGB/cross_scroll/actions">)
+
+[//]: # (<img src="https://img.shields.io/badge/License-MIT-yellow.svg">)
+
+[//]: # (</a>)
+
+[//]: # (<a href="https://github.com/Mehrankhan-METRA-RGB/cross_scroll/actions">)
+
+[//]: # (<img src="https://github.com/EdsonBueno/infinite_scroll_pagination/workflows/build/badge.svg">)
+
+[//]: # (</a>)
+
+[//]: # (<a href="https://github.com/Mehrankhan-METRA-RGB/cross_scroll">)
+
+[//]: # (<img src="https://img.shields.io/badge/platform-flutter-ff69b4.svg" >)
+
+[//]: # (</a><a href="https://github.com/Mehrankhan-METRA-RGB/cross_scroll">)
+
+[//]: # (<img src="https://img.shields.io/static/v1.svg?label=Pub&message=0.0.75&color=blue" >)
+
+[//]: # (</a>)
+
+[//]: # (<br /><br />)
+
+[//]: # (<a href="https://www.linkedin.com/in/mehran-ullah-742035153/">)
+
+[//]: # ()
+[//]: # (<img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" >)
+
+[//]: # (</a>)
+
+[//]: # (<a href="#">)
+
+[//]: # (<img src="https://img.shields.io/badge/WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white" >)
+
+[//]: # (</a>)
+
+[//]: # (<a href="https://mailto:m.jan9396@gmail.com">)
+
+[//]: # (<img src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white" >)
+
+[//]: # (</a></p>)
 
 
 ---
-<a href="https://metra.dev">METRA Website
-</a>
+
+[//]: # (<a href="https://metra.dev">METRA Website)
+
+[//]: # (</a>)
 
 
 
@@ -118,9 +145,9 @@ A CrossScroll is a flutter Package that permits it’s child views to be scrolle
 
 ## CrossScrollView
 ```dart
-CrossScroll( child: ///your child 
-    )
-
+CrossScroll(child:Container(), ///your child 
+    );
+ 
 ```
 
 
