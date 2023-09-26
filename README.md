@@ -118,8 +118,7 @@ A CrossScroll is a flutter Package that permits it’s child views to be scrolle
 
 ## CrossScrollView
 ```dart
-CrossScroll(
-      child:///your child 
+CrossScroll( child: ///your child 
     )
 
 ```

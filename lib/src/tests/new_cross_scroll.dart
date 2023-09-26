@@ -1,22 +1,107 @@
 import 'dart:async';
 
+import 'package:cross_scroll/cross_scroll.dart';
+import 'package:cross_scroll/src/Components/cross_scroll_thumb.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-
-import 'cross_scroll_bar.dart';
-import 'cross_scroll_decor.dart';
 
 ///This code has been design by [Mehran Ullah]
 ///email: m.jan9396@gmail.com, m.jan9396@hotmail.com
 
-// class Thumb {
-//   Thumb({this.currentPosition, this.visibility = true, this.thumbWidth});
-//   final double? currentPosition;
-//   final double? thumbWidth;
-//   final bool visibility;
-// }
+/// A box in which a single widget can be scrolled.
+///
+/// This widget is useful when you have a single box that will normally be
+/// entirely visible, for example a clock face in a time picker, but you need to
+/// make sure it can be scrolled if the container gets too small in one axis
+/// (the scroll direction).
+///
+/// It is also useful if you need to shrink-wrap in both axes (the main
+/// scrolling direction as well as the cross axis), as one might see in a dialog
+/// or pop-up menu. In that case, you might pair the [CrossScroll]
+/// with a [ListBody] child that can be scroll in both directions.
+///
 
-class CrossScroll extends StatefulWidget {
+///
+/// Sometimes a layout is designed around the flexible properties of a
+/// [Column], but there is the concern that in some cases, there might not
+/// be enough room to see the entire contents. This could be because some
+/// devices have unusually small screens, or because the application can
+/// be used in landscape mode where the aspect ratio isn't what was
+/// originally envisioned, or because the application is being shown in a
+/// small window in split-screen mode. In any case, as a result, it might
+/// make sense to wrap the layout in a [CrossScroll].
+///
+/// Doing so, however, usually results in a conflict between the [Column] or [Row],
+/// which typically tries to grow as big as it can, and the [CrossScroll],
+/// which provides its children with an infinite amount of space.
+///
+/// To resolve this apparent conflict, there are a couple of techniques, as
+/// discussed below. These techniques should only be used when the content is
+/// normally expected to fit on the screen,
+///
+/// ### Centering, spacing, or aligning fixed-height content
+///
+/// If the content has fixed (or intrinsic) dimensions but needs to be spaced out,
+/// centered, or otherwise positioned using the [Flex] layout model of a [Column],
+/// the following technique can be used to provide the [Column] with a minimum
+/// dimension while allowing it to shrink-wrap the contents when there isn't enough
+/// room to apply these spacing or alignment needs.
+///
+/// A [LayoutBuilder] is used to obtain the size of the viewport (implicitly via
+/// the constraints that the [CrossScroll] sees, since viewports
+/// typically grow to fit their maximum height constraint). Then, inside the
+/// scroll view, a [ConstrainedBox] is used to set the minimum height of the
+/// [Column].
+///
+/// The [Column] or [Row] has no [Expanded] children, so rather than take on the infinite
+/// height from its [BoxConstraints.maxHeight], (the viewport provides no maximum height
+/// constraint), it automatically tries to shrink to fit its children. It cannot
+/// be smaller than its [BoxConstraints.minHeight], though, and It therefore
+/// becomes the bigger of the minimum height or width provided by the
+/// [ConstrainedBox] and the sum of the heights of the children.
+///
+/// If the children aren't enough to fit that minimum size, the [Column] ends up
+/// with some remaining space to allocate as specified by its
+/// [Column.mainAxisAlignment] argument.
+///
+/// {@tool dartpad}
+/// In this example, the children are spaced out equally, unless there's no more
+/// room, in which case they stack vertically and scroll.
+///
+/// When using this technique, [Expanded] and [Flexible] are not useful, because
+/// in both cases the "available space" is infinite (since this is in a viewport).
+/// The next section describes a technique for providing a maximum height constraint.
+///
+/// ** See code in examples/api/lib/widgets/single_child_scroll_view/single_child_scroll_view.0.dart **
+/// {@end-tool}
+///
+/// ### Expanding content to fit the viewport
+///
+/// The following example builds on the previous one. In addition to providing a
+/// minimum dimension for the child [Column], an [IntrinsicHeight] widget is used
+/// to force the column to be exactly as big as its contents. This constraint
+/// combines with the [ConstrainedBox] constraints discussed previously to ensure
+/// that the column becomes either as big as viewport, or as big as the contents,
+/// whichever is biggest.
+///
+/// Both constraints must be used to get the desired effect. If only the
+/// [IntrinsicHeight] was specified, then the column would not grow to fit the
+/// entire viewport when its children were smaller than the whole screen. If only
+/// the size of the viewport was used, then the [Column] would overflow if the
+/// children were bigger than the viewport.
+///
+/// The widget that is to grow to fit the remaining space so provided is wrapped
+/// in an [Expanded] widget.
+///
+/// This technique is quite expensive, as it more or less requires that the contents
+/// of the viewport be laid out twice (once to find their intrinsic dimensions, and
+/// once to actually lay them out). The number of widgets within the column should
+/// therefore be kept small. Alternatively, subsets of the children that have known
+/// dimensions can be wrapped in a [SizedBox] that has tight vertical constraints,
+/// so that the intrinsic sizing algorithm can short-circuit the computation when it
+/// reaches those parts of the subtree.
+
+class NewCrossScroll extends StatefulWidget {
   ///CrossScroll is a Widget that can scroll on multiple directions and
   ///support all properties of [SingleChildScrollView].
   ///Keep [isAlwaysShown:true] while design for Android or IOS so you will
@@ -25,7 +110,7 @@ class CrossScroll extends StatefulWidget {
   ///         showTrackOnHover: false,
   ///         trackVisibility: false,
   ///         isAlwaysShown: true),
-  const CrossScroll(
+  const NewCrossScroll(
       {this.child,
       this.verticalScroll,
       this.horizontalScroll,
@@ -90,10 +175,10 @@ class CrossScroll extends StatefulWidget {
   final Color? dimColor;
 
   @override
-  State<CrossScroll> createState() => _CrossScrollState();
+  State<NewCrossScroll> createState() => _NewCrossScrollState();
 }
 
-class _CrossScrollState extends State<CrossScroll> {
+class _NewCrossScrollState extends State<NewCrossScroll> {
   // final ScrollController _horScrollController = ScrollController();
   final ScrollController horizontalScrollController = ScrollController();
   final ScrollController verticalScrollController = ScrollController();
@@ -112,8 +197,8 @@ class _CrossScrollState extends State<CrossScroll> {
   bool _onHoverHorizontalTrack = false;
   bool _onHoverVerticalTrack = false;
 
-  double? horizontalThumbCurrentPosition = 0;
-  double? verticalThumbCurrentPosition = 0;
+  ValueNotifier<double?> horizontalThumbCurrentPosition = ValueNotifier(0);
+  ValueNotifier<double?> verticalThumbCurrentPosition = ValueNotifier(0);
 
   double _horizontalViewPort = 0;
   double _verticalViewPort = 0;
@@ -126,16 +211,16 @@ class _CrossScrollState extends State<CrossScroll> {
   /// Platforms [Android and IOS]
   updateThumbPositionWithScroll(Axis orientation) {
     ScrollController controller = getController(orientation);
-    // print(controller.position.pixels);
-    setState(() {
-      if (orientation == Axis.horizontal) {
-        horizontalThumbCurrentPosition =
-            (controller.offset) / ratio(orientation);
-      } else {
-        verticalThumbCurrentPosition =
-            (controller.position.pixels) / ratio(orientation);
-      }
-    });
+    print(controller.position.pixels);
+    // setState(() {
+    if (orientation == Axis.horizontal) {
+      horizontalThumbCurrentPosition.value =
+          (controller.offset) / ratio(orientation);
+    } else {
+      verticalThumbCurrentPosition.value =
+          (controller.position.pixels) / ratio(orientation);
+    }
+    // });
   }
 
   @override
@@ -177,21 +262,18 @@ class _CrossScrollState extends State<CrossScroll> {
     // });
 
 // thumbCurrentPosition=widget.horizontalScrollController?.offset??horizontalScrollController.offset;
-
-    ///Here i comment out (width != previousWidth || height != previousHeight) beacuse of below issue
-    /// https://github.com/Mehrankhan-METRA-RGB/cross_scroll/issues/5#issue-1596328845
-//     if (width != previousWidth || height != previousHeight) {
-    Future.delayed(Duration.zero, () {
-      setState(() {
-        initializeControllerValues(Axis.vertical);
-        initializeControllerValues(Axis.horizontal);
-        keepThumbInRangeWhileResizingScreen(Axis.vertical);
-        keepThumbInRangeWhileResizingScreen(Axis.horizontal);
+    if (width != previousWidth || height != previousHeight) {
+      Future.delayed(Duration.zero, () {
+        setState(() {
+          initializeControllerValues(Axis.vertical);
+          initializeControllerValues(Axis.horizontal);
+          keepThumbInRangeWhileResizingScreen(Axis.vertical);
+          keepThumbInRangeWhileResizingScreen(Axis.horizontal);
+        });
       });
-    });
-    previousHeight = height!;
-    previousWidth = width!;
-    // }
+      previousHeight = height!;
+      previousWidth = width!;
+    }
 
     CrossScrollBar? vBar = widget.verticalBar;
     CrossScrollDesign? vStyle = widget.verticalScroll;
@@ -211,8 +293,8 @@ class _CrossScrollState extends State<CrossScroll> {
                   ScrollViewKeyboardDismissBehavior.manual,
               restorationId: vStyle?.restorationId,
               padding: vStyle?.padding,
-              // primary: vStyle?.primary,
-              physics: vStyle?.physics,
+              primary: false,
+              // physics: vStyle?.physics,
               scrollDirection: Axis.vertical,
               controller:
                   widget.verticalScrollController ?? verticalScrollController,
@@ -222,7 +304,7 @@ class _CrossScrollState extends State<CrossScroll> {
                 keyboardDismissBehavior: hStyle?.keyboardDismissBehavior ??
                     ScrollViewKeyboardDismissBehavior.manual,
                 restorationId: hStyle?.restorationId,
-                padding: hStyle?.padding,
+                padding: hStyle?.padding, primary: false,
                 // primary: hStyle?.primary,
                 physics: hStyle?.physics,
                 scrollDirection: Axis.horizontal,
@@ -234,42 +316,69 @@ class _CrossScrollState extends State<CrossScroll> {
           ),
 
           ///Horizontal Scroll track
-          _horizontalViewPort == _horizontalMaxExtent
-              ? const SizedBox(
-                  width: 0,
-                  height: 0,
-                )
-              : _scrollTrack(
-                  bar: hBar!,
-                  orientation: Axis.horizontal,
-                ),
+          if (_horizontalViewPort != _horizontalMaxExtent)
+            _scrollTrack(
+              bar: hBar!,
+              orientation: Axis.horizontal,
+            ),
 
           ///Horizontal scroll thumb
-          _horizontalViewPort == _horizontalMaxExtent
-              ? const SizedBox(
-                  width: 0,
-                  height: 0,
-                )
-              : _scrollThumb(thumb: hBar!, orientation: Axis.horizontal),
+          if (_horizontalViewPort != _horizontalMaxExtent)
+            ValueListenableBuilder<double?>(
+                valueListenable: verticalThumbCurrentPosition,
+                builder: (context, double? vertical, child) {
+                  print("Vertical-Positions:$vertical");
+                  return ValueListenableBuilder<double?>(
+                      valueListenable: horizontalThumbCurrentPosition,
+                      builder: (context, double? horizontal, child) =>
+                          CrossScrollThumb(
+                            axis: Axis.horizontal,
+                            verticalThumbCurrentPosition: vertical,
+                            horizontalThumbCurrentPosition: horizontal,
+                            dimColor: widget.dimColor,
+                            hoverColor: widget.hoverColor,
+                            normalColor: widget.normalColor,
+                            thumb: hBar,
+                            hThumbWidth: _horizontalThumbWidth,
+                            vThumbWidth: _verticalThumbWidth,
+                            onDrag: (drag) =>
+                                _onDrag(drag, orientation: Axis.horizontal),
+                          ));
+                }),
+
+          // _scrollThumb(thumb: hBar!, orientation: Axis.horizontal),
 
           ///Vertical Scroll track
-          _verticalViewPort == _verticalMaxExtent
-              ? const SizedBox(
-                  width: 0,
-                  height: 0,
-                )
-              : _scrollTrack(
-                  bar: vBar!,
-                  orientation: Axis.vertical,
-                ),
+          if (_verticalViewPort != _verticalMaxExtent)
+            _scrollTrack(
+              bar: vBar!,
+              orientation: Axis.vertical,
+            ),
 
           ///Vertical scroll thumb
-          _verticalViewPort == _verticalMaxExtent
-              ? const SizedBox(
-                  width: 0,
-                  height: 0,
-                )
-              : _scrollThumb(thumb: vBar!, orientation: Axis.vertical),
+          if (_verticalViewPort != _verticalMaxExtent)
+            ValueListenableBuilder<double?>(
+                valueListenable: verticalThumbCurrentPosition,
+                builder: (context, double? vertical, child) {
+                  print("Vertical-Positions:$vertical");
+                  return ValueListenableBuilder<double?>(
+                    valueListenable: horizontalThumbCurrentPosition,
+                    builder: (context, double? horizontal, child) =>
+                        CrossScrollThumb(
+                      axis: Axis.vertical,
+                      verticalThumbCurrentPosition: vertical,
+                      horizontalThumbCurrentPosition: horizontal,
+                      dimColor: widget.dimColor,
+                      hoverColor: widget.hoverColor,
+                      normalColor: widget.normalColor,
+                      thumb: widget.horizontalBar,
+                      hThumbWidth: _horizontalThumbWidth,
+                      vThumbWidth: _verticalThumbWidth,
+                      onDrag: (drag) =>
+                          _onDrag(drag, orientation: Axis.vertical),
+                    ),
+                  );
+                }),
         ],
       ),
     );
@@ -333,22 +442,22 @@ class _CrossScrollState extends State<CrossScroll> {
     if (orientation == Axis.horizontal) {
       ///horizontal
 
-      if (0 > horizontalThumbCurrentPosition!) {
-        horizontalThumbCurrentPosition = 0;
-      } else if (horizontalThumbCurrentPosition! >
+      if (0 > horizontalThumbCurrentPosition.value!) {
+        horizontalThumbCurrentPosition.value = 0;
+      } else if (horizontalThumbCurrentPosition.value! >
           viewPort(orientation) - _thumbSize(orientation)) {
-        horizontalThumbCurrentPosition =
+        horizontalThumbCurrentPosition.value =
             viewPort(orientation) - _thumbSize(orientation);
-      } else if (0 <= horizontalThumbCurrentPosition! &&
-          horizontalThumbCurrentPosition! <=
+      } else if (0 <= horizontalThumbCurrentPosition.value! &&
+          horizontalThumbCurrentPosition.value! <=
               viewPort(orientation) - _thumbSize(orientation)) {
-        horizontalThumbCurrentPosition =
-            horizontalThumbCurrentPosition! + a.delta.dx;
-        if (horizontalThumbCurrentPosition! != 0 ||
-            horizontalThumbCurrentPosition! !=
+        horizontalThumbCurrentPosition.value =
+            horizontalThumbCurrentPosition.value! + a.delta.dx;
+        if (horizontalThumbCurrentPosition.value! != 0 ||
+            horizontalThumbCurrentPosition.value! !=
                 viewPort(orientation) - _thumbSize(orientation)) {
-          getController(orientation)
-              .jumpTo(horizontalThumbCurrentPosition! * ratio(orientation));
+          getController(orientation).jumpTo(
+              horizontalThumbCurrentPosition.value! * ratio(orientation));
           // if (kDebugMode) {
           //   print('JumpTo:${thumbCurrentPosition! * ratio}');
           // }
@@ -357,22 +466,22 @@ class _CrossScrollState extends State<CrossScroll> {
     } else {
       ///vertical
       print(a.delta.dy);
-      if (verticalThumbCurrentPosition! < 0) {
-        verticalThumbCurrentPosition = 0;
-      } else if (verticalThumbCurrentPosition! >
+      if (verticalThumbCurrentPosition.value! < 0) {
+        verticalThumbCurrentPosition.value = 0;
+      } else if (verticalThumbCurrentPosition.value! >
           viewPort(orientation) - _thumbSize(orientation)) {
-        verticalThumbCurrentPosition =
+        verticalThumbCurrentPosition.value =
             viewPort(orientation) - _thumbSize(orientation);
-      } else if (verticalThumbCurrentPosition! >= 0 &&
-          verticalThumbCurrentPosition! <=
+      } else if (verticalThumbCurrentPosition.value! >= 0 &&
+          verticalThumbCurrentPosition.value! <=
               viewPort(orientation) - _thumbSize(orientation)) {
-        verticalThumbCurrentPosition =
-            verticalThumbCurrentPosition! + a.delta.dy;
-        if (verticalThumbCurrentPosition! != 0 ||
-            verticalThumbCurrentPosition! !=
+        verticalThumbCurrentPosition.value =
+            verticalThumbCurrentPosition.value! + a.delta.dy;
+        if (verticalThumbCurrentPosition.value! != 0 ||
+            verticalThumbCurrentPosition.value! !=
                 viewPort(orientation) - _thumbSize(orientation)) {
           getController(orientation)
-              .jumpTo(verticalThumbCurrentPosition! * ratio(orientation));
+              .jumpTo(verticalThumbCurrentPosition.value! * ratio(orientation));
         }
       }
     }
@@ -390,54 +499,56 @@ class _CrossScrollState extends State<CrossScroll> {
         widget.verticalScrollController ?? verticalScrollController;
 
     double _horizontalTrackLengthFromThumbPoint =
-        horizontalThumbCurrentPosition! + _horizontalThumbWidth;
+        horizontalThumbCurrentPosition.value! + _horizontalThumbWidth;
     double _verticalTrackLengthFromThumbPoint =
-        verticalThumbCurrentPosition! + _verticalThumbWidth;
+        verticalThumbCurrentPosition.value! + _verticalThumbWidth;
 
     if (orientation == Axis.horizontal) {
       ///horizontal track
-      if (tapDownDetails.localPosition.dx > horizontalThumbCurrentPosition!) {
+      if (tapDownDetails.localPosition.dx >
+          horizontalThumbCurrentPosition.value!) {
         if (_horizontalTrackLengthFromThumbPoint <
             _horizontalViewPort - _horizontalThumbWidth) {
           // print('+ive\nless than _viewport - _thumbWidth');
 
-          horizontalThumbCurrentPosition =
-              horizontalThumbCurrentPosition! + _horizontalThumbWidth;
+          horizontalThumbCurrentPosition.value =
+              horizontalThumbCurrentPosition.value! + _horizontalThumbWidth;
           _hController.animateTo(
-              horizontalThumbCurrentPosition! * ratio(orientation),
+              horizontalThumbCurrentPosition.value! * ratio(orientation),
               duration: const Duration(
                 milliseconds: 300,
               ),
               curve: Curves.linear);
         } else {
-          horizontalThumbCurrentPosition =
+          horizontalThumbCurrentPosition.value =
               _horizontalViewPort - _horizontalThumbWidth;
           _hController.animateTo(
-              horizontalThumbCurrentPosition! * ratio(orientation),
+              horizontalThumbCurrentPosition.value! * ratio(orientation),
               duration: const Duration(
                 milliseconds: 300,
               ),
               curve: Curves.linear);
         }
       } else if (tapDownDetails.localPosition.dx <
-          horizontalThumbCurrentPosition!) {
-        if (horizontalThumbCurrentPosition! > _horizontalThumbWidth) {
+          horizontalThumbCurrentPosition.value!) {
+        if (horizontalThumbCurrentPosition.value! > _horizontalThumbWidth) {
           // print('_crnt$_crnt');
           // print('_thumbWidth$_thumbWidth');
           // print('-ive\ngreater than thumb');
-          horizontalThumbCurrentPosition =
-              horizontalThumbCurrentPosition! - _horizontalThumbWidth;
+          horizontalThumbCurrentPosition.value =
+              horizontalThumbCurrentPosition.value! - _horizontalThumbWidth;
           _hController.animateTo(
-              horizontalThumbCurrentPosition! * ratio(orientation),
+              horizontalThumbCurrentPosition.value! * ratio(orientation),
               duration: const Duration(
                 milliseconds: 300,
               ),
               curve: Curves.linear);
-        } else if (horizontalThumbCurrentPosition! < _horizontalThumbWidth) {
+        } else if (horizontalThumbCurrentPosition.value! <
+            _horizontalThumbWidth) {
           // print('-ive\nless than thumb');
-          horizontalThumbCurrentPosition = 0;
+          horizontalThumbCurrentPosition.value = 0;
           _hController.animateTo(
-              horizontalThumbCurrentPosition! * ratio(orientation),
+              horizontalThumbCurrentPosition.value! * ratio(orientation),
               duration: const Duration(
                 milliseconds: 300,
               ),
@@ -446,48 +557,49 @@ class _CrossScrollState extends State<CrossScroll> {
       }
     } else {
       ///vertical track
-      if (tapDownDetails.localPosition.dy > verticalThumbCurrentPosition!) {
+      if (tapDownDetails.localPosition.dy >
+          verticalThumbCurrentPosition.value!) {
         if (_verticalTrackLengthFromThumbPoint <
             _verticalViewPort - _verticalThumbWidth) {
           // print('+ive\nless than _viewport - _thumbWidth');
 
-          verticalThumbCurrentPosition =
-              verticalThumbCurrentPosition! + _verticalThumbWidth;
+          verticalThumbCurrentPosition.value =
+              verticalThumbCurrentPosition.value! + _verticalThumbWidth;
           _vController.animateTo(
-              verticalThumbCurrentPosition! * ratio(orientation),
+              verticalThumbCurrentPosition.value! * ratio(orientation),
               duration: const Duration(
                 milliseconds: 300,
               ),
               curve: Curves.linear);
         } else {
-          verticalThumbCurrentPosition =
+          verticalThumbCurrentPosition.value =
               _verticalViewPort - _verticalThumbWidth;
           _vController.animateTo(
-              verticalThumbCurrentPosition! * ratio(orientation),
+              verticalThumbCurrentPosition.value! * ratio(orientation),
               duration: const Duration(
                 milliseconds: 300,
               ),
               curve: Curves.linear);
         }
       } else if (tapDownDetails.localPosition.dy <
-          verticalThumbCurrentPosition!) {
-        if (verticalThumbCurrentPosition! > _verticalThumbWidth) {
+          verticalThumbCurrentPosition.value!) {
+        if (verticalThumbCurrentPosition.value! > _verticalThumbWidth) {
           // print('_crnt$_crnt');
           // print('_thumbWidth$_thumbWidth');
           // print('-ive\ngreater than thumb');
-          verticalThumbCurrentPosition =
-              verticalThumbCurrentPosition! - _verticalThumbWidth;
+          verticalThumbCurrentPosition.value =
+              verticalThumbCurrentPosition.value! - _verticalThumbWidth;
           _vController.animateTo(
-              verticalThumbCurrentPosition! * ratio(orientation),
+              verticalThumbCurrentPosition.value! * ratio(orientation),
               duration: const Duration(
                 milliseconds: 300,
               ),
               curve: Curves.linear);
-        } else if (verticalThumbCurrentPosition! < _verticalThumbWidth) {
+        } else if (verticalThumbCurrentPosition.value! < _verticalThumbWidth) {
           // print('-ive\nless than thumb');
-          verticalThumbCurrentPosition = 0;
+          verticalThumbCurrentPosition.value = 0;
           _vController.animateTo(
-              verticalThumbCurrentPosition! * ratio(orientation),
+              verticalThumbCurrentPosition.value! * ratio(orientation),
               duration: const Duration(
                 milliseconds: 300,
               ),
@@ -500,8 +612,8 @@ class _CrossScrollState extends State<CrossScroll> {
   void keepThumbInRangeWhileResizingScreen(Axis orientation) {
     bool _isHorizontal = orientation == Axis.horizontal ? true : false;
     double _thumbCurrentPosition = _isHorizontal
-        ? horizontalThumbCurrentPosition!
-        : verticalThumbCurrentPosition!;
+        ? horizontalThumbCurrentPosition.value!
+        : verticalThumbCurrentPosition.value!;
     if (_thumbCurrentPosition >
         viewPort(orientation) - _thumbSize(orientation)) {
       _thumbCurrentPosition = viewPort(orientation) - _thumbSize(orientation);
@@ -534,38 +646,6 @@ class _CrossScrollState extends State<CrossScroll> {
     return orientation == Axis.vertical
         ? widget.verticalScrollController ?? verticalScrollController
         : widget.horizontalScrollController ?? horizontalScrollController;
-  }
-
-  BorderRadiusGeometry _thumbRadius(
-      {required CrossScrollBar bar,
-      required bool hover,
-      required Axis orientation}) {
-    return BorderRadius.all(Radius.elliptical(
-        bar.thumbRadius?.x ?? bar.thickness ?? 8,
-        bar.thumbRadius?.y ?? bar.thickness ?? 8));
-  }
-
-  Color _thumbColor(
-    BuildContext context, {
-    required CrossScrollBar bar,
-    required bool hover,
-    required Axis orientation,
-  }) {
-    ///called by Cross scroll constructor
-    Color normalColor =
-        widget.normalColor ?? const Color.fromARGB(228, 26, 26, 26);
-    Color dimColor = widget.dimColor ?? const Color.fromARGB(159, 24, 24, 24);
-
-    if (bar.thumb == ScrollThumb.hoverShow ||
-        bar.track == ScrollTrack.onHover) {
-      return hover ? widget.hoverColor ?? normalColor : dimColor;
-    } else if (bar.thumb == ScrollThumb.alwaysDim) {
-      return dimColor;
-    } else if (bar.thumb == ScrollThumb.alwaysShow) {
-      return normalColor;
-    } else {
-      return normalColor;
-    }
   }
 
   ///if no color provided, default colors will be assign
@@ -675,67 +755,5 @@ class _CrossScrollState extends State<CrossScroll> {
             );
         }
     }
-  }
-
-  Widget _scrollThumb(
-      {required CrossScrollBar thumb, required Axis orientation}) {
-    bool _isHorizontal = orientation == Axis.horizontal ? true : false;
-    bool _trackHover =
-        _isHorizontal ? _onHoverHorizontalTrack : _onHoverVerticalTrack;
-    double? _thumbThickness() =>
-        _trackHover ? thumb.hoverThickness : thumb.thickness;
-
-    Widget position = Positioned(
-      top: _isHorizontal ? null : verticalThumbCurrentPosition,
-      bottom: _isHorizontal ? 1 : null,
-      left: !_isHorizontal ? null : horizontalThumbCurrentPosition,
-      right: !_isHorizontal ? 1 : null,
-      child: SizedBox(
-          height: _isHorizontal
-              ? _thumbThickness()
-              : _verticalThumbWidth < 55
-                  ? 55
-                  : _verticalThumbWidth,
-          width: !_isHorizontal
-              ? _thumbThickness()
-              : _horizontalThumbWidth < 55
-                  ? 55
-                  : _horizontalThumbWidth,
-          child: GestureDetector(
-            // onTapDown: (tip) =>fingerTip= tip.localPosition.dx,
-            onPanUpdate: (drag) => _onDrag(drag, orientation: orientation),
-            child: InkWell(
-              onHover: (hover) {
-                setState(() {
-                  _isHorizontal
-                      ? _onHoverHorizontalTrack = hover
-                      : _onHoverVerticalTrack = hover;
-                });
-              },
-              autofocus: true,
-              enableFeedback: true,
-              excludeFromSemantics: true,
-              onTap: () {},
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: _thumbRadius(
-                      bar: thumb,
-                      hover: _isHorizontal
-                          ? _onHoverHorizontalTrack
-                          : _onHoverVerticalTrack,
-                      orientation: orientation),
-                  color: _thumbColor(context,
-                      bar: thumb,
-                      hover: _isHorizontal
-                          ? _onHoverHorizontalTrack
-                          : _onHoverVerticalTrack,
-                      orientation: orientation),
-                ),
-              ),
-            ),
-          )),
-    );
-
-    return position;
   }
 }
