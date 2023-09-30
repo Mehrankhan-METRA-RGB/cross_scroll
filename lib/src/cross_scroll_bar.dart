@@ -55,5 +55,8 @@ class CrossScrollBar {
 /// [ScrollTrack.onHover] will show the track while on hover.
 ///
 /// [ScrollTrack.hidden] will keep the scroll track hidden.
-enum ScrollTrack { show, onHover, hidden }
+///
+/// [ScrollTrack.none] no scroll track.
+enum ScrollTrack { show, onHover, hidden, none }
+
 enum ScrollThumb { hoverShow, alwaysShow, alwaysDim }

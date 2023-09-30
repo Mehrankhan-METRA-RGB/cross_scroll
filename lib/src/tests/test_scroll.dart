@@ -331,6 +331,8 @@ class _TestCrossScrollState extends State<TestCrossScroll> {
               color: _noColor,
               borderColor: _noColor,
             );
+          case ScrollTrack.none:
+            return const SizedBox.shrink();
         }
 
       case Axis.horizontal:
@@ -352,6 +354,8 @@ class _TestCrossScrollState extends State<TestCrossScroll> {
               color: _noColor,
               borderColor: _noColor,
             );
+          case ScrollTrack.none:
+            return const SizedBox.shrink();
         }
     }
   }
