@@ -19,7 +19,30 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home:
-          // \Tabular()
+          // Stack(
+          //   children: [
+          //     Positioned(
+          //         right: 0,
+          //         child: SizedBox(
+          //             height: MediaQuery.of(context).size.height,
+          //             width: 50,
+          //             child: MovableContainer(
+          //               width: 30,
+          //               height: 200,
+          //               axis: Axis.vertical,
+          //             ))),
+          //     Positioned(
+          //         bottom: 0,
+          //         child: SizedBox(
+          //             height: 50,
+          //             width: MediaQuery.of(context).size.width,
+          //             child: MovableContainer(
+          //               width: 100,
+          //               height: 50,
+          //               axis: Axis.horizontal,
+          //             )))
+          //   ],
+          // )
 
           Example(),
     );
@@ -31,7 +54,7 @@ class Example extends StatelessWidget {
   final random = Random();
   @override
   Widget build(BuildContext context) {
-    return CrossScroll(
+    return InteractiveViewerScroll(
       ///Optional
       // normalColor: Colors.blue,
       ///Optional
@@ -44,10 +67,10 @@ class Example extends StatelessWidget {
 
       child: Column(
         children: [
-          for (var i = 1; i < 30; i++)
+          for (var i = 1; i < 50; i++)
             Row(
               children: [
-                for (var i = 1; i < 30; i++)
+                for (var i = 1; i < 50; i++)
                   Container(
                       margin: const EdgeInsets.all(2),
                       width: 500,
@@ -59,6 +82,58 @@ class Example extends StatelessWidget {
               ],
             )
         ],
+      ),
+    );
+  }
+}
+
+class MyInteractiveViewerWidget extends StatelessWidget {
+  MyInteractiveViewerWidget({super.key});
+  final GlobalKey myWidgetKey = GlobalKey();
+  @override
+  Widget build(BuildContext context) {
+    TransformationController _controller = TransformationController();
+    double? widgetWidth = 1;
+    double? widgetHeight = 1;
+    _controller.addListener(() {
+      double currentScale = _controller.value.getMaxScaleOnAxis();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Size? size = myWidgetKey.currentContext?.size;
+      });
+      print("Scale:$currentScale");
+      print(
+          'Widget Size: Width = ${(widgetWidth ?? 1) * currentScale}, Height = ${(widgetHeight ?? 1) * currentScale}');
+    });
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Mehran Ullah Khan'),
+      ),
+      body: InteractiveViewer.builder(
+        scaleEnabled: true,
+        transformationController: _controller,
+        builder: (context, quad) {
+          return SizedBox(
+            key: myWidgetKey,
+            child: Column(
+              children: [
+                for (var j = 1; j < 50; j++)
+                  Row(
+                    children: [
+                      for (var i = 1; i < 50; i++)
+                        Container(
+                            margin: const EdgeInsets.all(2),
+                            width: 500,
+                            height: 300,
+
+                            ///get random color for container
+                            color: Color.fromARGB(255, i + 20, j + 30, j + 60)),
+                    ],
+                  )
+              ],
+            ),
+          );
+        },
       ),
     );
   }
