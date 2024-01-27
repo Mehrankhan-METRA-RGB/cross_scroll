@@ -186,6 +186,32 @@ CrossScroll(child:Container(), ///your child
 
 ```
 
+
+
+
+
+
+#### Infinite Cross Scrolling (BETA)
+```dart
+
+ CrossScrollBar(
+ controller: controller,
+child: InfiniteCrossScroll(
+maxRows: 10,
+maxColumns: 10,
+controller: controller,
+cellSize: const Size(150, 150),
+builder: (context, vicinity) => Container(
+height: 150,
+width: 150,
+color: Color.fromARGB(255, Random().nextInt(255),
+Random().nextInt(255), Random().nextInt(255)),
+   ),
+  ),
+ ),
+
+```
+         
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
