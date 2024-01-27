@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class CrossScrollBar {
-  const CrossScrollBar({
-    ScrollTrack track = ScrollTrack.onHover,
+class CrossScrollTrack {
+  const CrossScrollTrack({
+    ScrollTrackBehaviour track = ScrollTrackBehaviour.onHover,
     ScrollThumb thumb = ScrollThumb.alwaysDim,
     double hoverThickness = 8,
     double thickness = 8,
@@ -22,7 +22,7 @@ class CrossScrollBar {
   /// Controls the track visibility.
   ///
   ///Track color behaviour
-  final ScrollTrack track;
+  final ScrollTrackBehaviour track;
 
   /// The thickness of the scrollbar when a hover state is active and
   /// [showTrackOnHover] is true.
@@ -50,10 +50,11 @@ class CrossScrollBar {
   final Radius? thumbRadius;
 }
 
-///[ScrollTrack.show] will keep the scroll track always visible.
+///[ScrollTrackBehaviour.show] will keep the scroll track always visible.
 ///
-/// [ScrollTrack.onHover] will show the track while on hover.
+/// [ScrollTrackBehaviour.onHover] will show the track while on hover.
 ///
-/// [ScrollTrack.hidden] will keep the scroll track hidden.
-enum ScrollTrack { show, onHover, hidden }
+/// [ScrollTrackBehaviour.hidden] will keep the scroll track hidden.
+enum ScrollTrackBehaviour { show, onHover, hidden }
+
 enum ScrollThumb { hoverShow, alwaysShow, alwaysDim }

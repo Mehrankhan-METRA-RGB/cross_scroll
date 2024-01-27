@@ -1,28 +1,27 @@
 import 'package:cross_scroll/cross_scroll.dart';
+import 'package:cross_scroll/src/Infinite/CrossScrollBar/cross_scroll_bar.dart';
 import 'package:flutter/material.dart';
 
 class CrossScrollThumb extends StatefulWidget {
   const CrossScrollThumb(
       {required this.axis,
-      this.thumb,
-      this.verticalThumbCurrentPosition,
-      this.horizontalThumbCurrentPosition,
-      required this.hThumbWidth,
+      this.thumb = const CrossScrollTrack(),
+      this.position,
       required this.onDrag,
-      required this.vThumbWidth,
+      required this.thumbLength,
       this.dimColor,
       this.normalColor,
       this.hoverColor,
+      required this.appearance,
       super.key});
-  final CrossScrollBar? thumb;
+  final CrossScrollTrack? thumb;
   final Axis axis;
-  final double? verticalThumbCurrentPosition;
-  final double? horizontalThumbCurrentPosition;
-  final double vThumbWidth;
-  final double hThumbWidth;
+  final double? position;
+  final double thumbLength;
   final Color? normalColor;
   final Color? hoverColor;
   final Color? dimColor;
+  final TrackAppearance appearance;
   final void Function(DragUpdateDetails) onDrag;
 
   @override
@@ -46,40 +45,61 @@ class _CrossScrollThumbState extends State<CrossScrollThumb> {
         _isHorizontal ? _onHoverHorizontalTrack : _onHoverVerticalTrack;
   }
 
+  _toggle(bool enter) {
+    setState(() {
+      _isHorizontal
+          ? _onHoverHorizontalTrack = enter
+          : _onHoverVerticalTrack = enter;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    print("Positioned:${widget.verticalThumbCurrentPosition}");
-    print("Positioned:${widget.horizontalThumbCurrentPosition}");
     return Positioned(
-      top: _isHorizontal ? null : widget.verticalThumbCurrentPosition,
-      bottom: _isHorizontal ? 1 : null,
-      left: !_isHorizontal ? null : widget.horizontalThumbCurrentPosition,
-      right: !_isHorizontal ? 1 : null,
+      top: _isHorizontal
+          ? (widget.appearance == TrackAppearance.TOP_RIGHT ||
+                  widget.appearance == TrackAppearance.TOP_LEFT)
+              ? 1
+              : null
+          : widget.position,
+      bottom: _isHorizontal
+          ? (widget.appearance == TrackAppearance.BOTTOM_LEFT ||
+                  widget.appearance == TrackAppearance.BOTTOM_RIGHT)
+              ? 1
+              : null
+          : (widget.appearance == TrackAppearance.BOTTOM_LEFT ||
+                  widget.appearance == TrackAppearance.BOTTOM_LEFT)
+              ? 1
+              : null,
+      left: !_isHorizontal
+          ? (widget.appearance == TrackAppearance.BOTTOM_LEFT ||
+                  widget.appearance == TrackAppearance.TOP_LEFT)
+              ? 1
+              : null
+          : widget.position,
+      right: !_isHorizontal
+          ? (widget.appearance == TrackAppearance.BOTTOM_RIGHT ||
+                  widget.appearance == TrackAppearance.TOP_RIGHT)
+              ? 1
+              : null
+          : null,
       child: SizedBox(
           height: _isHorizontal
               ? _thumbThickness()
-              : widget.vThumbWidth < 55
+              : widget.thumbLength < 55
                   ? 55
-                  : widget.vThumbWidth,
-          width: !_isHorizontal
-              ? _thumbThickness()
-              : widget.hThumbWidth < 55
+                  : widget.thumbLength,
+          width: _isHorizontal
+              ? widget.thumbLength < 55
                   ? 55
-                  : widget.hThumbWidth,
-          child: GestureDetector(
-            // onTapDown: (tip) =>fingerTip= tip.localPosition.dx,
-            onPanUpdate: widget.onDrag,
-            child: InkWell(
-              onHover: (hover) {
-                setState(() {
-                  _isHorizontal
-                      ? _onHoverHorizontalTrack = hover
-                      : _onHoverVerticalTrack = hover;
-                });
-              },
-              autofocus: true,
-              enableFeedback: true,
-              excludeFromSemantics: true,
+                  : widget.thumbLength
+              : _thumbThickness(),
+          child: MouseRegion(
+            onEnter: (hover) => _toggle(true),
+            onExit: (_) => _toggle(false),
+            child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onPanUpdate: widget.onDrag,
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: _thumbRadius(
@@ -106,7 +126,7 @@ class _CrossScrollThumbState extends State<CrossScrollThumb> {
   bool _onHoverVerticalTrack = false;
 
   BorderRadiusGeometry _thumbRadius(
-      {required CrossScrollBar bar,
+      {required CrossScrollTrack bar,
       required bool hover,
       required Axis orientation}) {
     return BorderRadius.all(Radius.elliptical(
@@ -116,7 +136,7 @@ class _CrossScrollThumbState extends State<CrossScrollThumb> {
 
   Color _thumbColor(
     BuildContext context, {
-    required CrossScrollBar bar,
+    required CrossScrollTrack bar,
     required bool hover,
     required Axis orientation,
   }) {
@@ -126,7 +146,7 @@ class _CrossScrollThumbState extends State<CrossScrollThumb> {
     Color dimColor = widget.dimColor ?? const Color.fromARGB(159, 24, 24, 24);
 
     if (bar.thumb == ScrollThumb.hoverShow ||
-        bar.track == ScrollTrack.onHover) {
+        bar.track == ScrollTrackBehaviour.onHover) {
       return hover ? widget.hoverColor ?? normalColor : dimColor;
     } else if (bar.thumb == ScrollThumb.alwaysDim) {
       return dimColor;

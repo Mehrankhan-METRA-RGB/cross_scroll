@@ -33,8 +33,8 @@ class TestCrossScroll extends StatefulWidget {
       this.dimColor,
       this.normalColor,
       this.hoverColor,
-      this.horizontalBar = const CrossScrollBar(),
-      this.verticalBar = const CrossScrollBar(),
+      this.horizontalBar = const CrossScrollTrack(),
+      this.verticalBar = const CrossScrollTrack(),
       Key? key})
       : super(key: key);
   final Widget? child;
@@ -72,10 +72,10 @@ class TestCrossScroll extends StatefulWidget {
   final ScrollController? verticalScrollController;
 
   ///Modify Vertical scroll thumb and track
-  final CrossScrollBar? verticalBar;
+  final CrossScrollTrack? verticalBar;
 
   ///Modify horizontal scroll thumb and track
-  final CrossScrollBar? horizontalBar;
+  final CrossScrollTrack? horizontalBar;
 
   ///Shown this color when you hovered over a thumb
   ///
@@ -126,9 +126,9 @@ class _TestCrossScrollState extends State<TestCrossScroll> {
       notifier.previousWidth = notifier.width!;
     }
 
-    CrossScrollBar? vBar = widget.verticalBar;
+    CrossScrollTrack? vBar = widget.verticalBar;
     CrossScrollDesign? vStyle = widget.verticalScroll;
-    CrossScrollBar? hBar = widget.horizontalBar;
+    CrossScrollTrack? hBar = widget.horizontalBar;
     CrossScrollDesign? hStyle = widget.horizontalScroll;
     return Scaffold(
       body: Stack(
@@ -209,7 +209,7 @@ class _TestCrossScrollState extends State<TestCrossScroll> {
   }
 
   BorderRadiusGeometry _thumbRadius(
-      {required CrossScrollBar bar,
+      {required CrossScrollTrack bar,
       required bool hover,
       required Axis orientation}) {
     return BorderRadius.all(Radius.elliptical(
@@ -219,7 +219,7 @@ class _TestCrossScrollState extends State<TestCrossScroll> {
 
   Color _thumbColor(
     BuildContext context, {
-    required CrossScrollBar bar,
+    required CrossScrollTrack bar,
     required bool hover,
     required Axis orientation,
   }) {
@@ -229,7 +229,7 @@ class _TestCrossScrollState extends State<TestCrossScroll> {
     Color dimColor = widget.dimColor ?? const Color.fromARGB(159, 24, 24, 24);
 
     if (bar.thumb == ScrollThumb.hoverShow ||
-        bar.track == ScrollTrack.onHover) {
+        bar.track == ScrollTrackBehaviour.onHover) {
       return hover ? widget.hoverColor ?? normalColor : dimColor;
     } else if (bar.thumb == ScrollThumb.alwaysDim) {
       return dimColor;
@@ -249,7 +249,7 @@ class _TestCrossScrollState extends State<TestCrossScroll> {
   ///[borderColor]??Colors.black.withOpacity(0.0851);
 
   Widget _scrollTrack(
-      {required CrossScrollBar bar,
+      {required CrossScrollTrack bar,
       required Axis orientation,
       Color? trackColor,
       Color? noColor,
@@ -314,19 +314,19 @@ class _TestCrossScrollState extends State<TestCrossScroll> {
 
         ///track bar switch
         switch (bar.track) {
-          case ScrollTrack.onHover:
+          case ScrollTrackBehaviour.onHover:
             return _trackWidget(
               color: notifier.onHoverVerticalTrack ? _trackColor : _noColor,
               borderColor:
                   notifier.onHoverVerticalTrack ? _borderColor : _noColor,
             );
 
-          case ScrollTrack.show:
+          case ScrollTrackBehaviour.show:
             return _trackWidget(
               color: _trackColor,
               borderColor: _borderColor,
             );
-          case ScrollTrack.hidden:
+          case ScrollTrackBehaviour.hidden:
             return _trackWidget(
               color: _noColor,
               borderColor: _noColor,
@@ -335,19 +335,19 @@ class _TestCrossScrollState extends State<TestCrossScroll> {
 
       case Axis.horizontal:
         switch (bar.track) {
-          case ScrollTrack.onHover:
+          case ScrollTrackBehaviour.onHover:
             return _trackWidget(
               color: notifier.onHoverHorizontalTrack ? _trackColor : _noColor,
               borderColor:
                   notifier.onHoverHorizontalTrack ? _borderColor : _noColor,
             );
 
-          case ScrollTrack.show:
+          case ScrollTrackBehaviour.show:
             return _trackWidget(
               color: _trackColor,
               borderColor: _borderColor,
             );
-          case ScrollTrack.hidden:
+          case ScrollTrackBehaviour.hidden:
             return _trackWidget(
               color: _noColor,
               borderColor: _noColor,
@@ -357,7 +357,7 @@ class _TestCrossScrollState extends State<TestCrossScroll> {
   }
 
   Widget _scrollThumb(
-      {required CrossScrollBar thumb, required Axis orientation}) {
+      {required CrossScrollTrack thumb, required Axis orientation}) {
     bool _isHorizontal = orientation == Axis.horizontal ? true : false;
     bool _trackHover = _isHorizontal
         ? notifier.onHoverHorizontalTrack

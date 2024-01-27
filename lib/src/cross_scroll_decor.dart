@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
 class CrossScrollDesign {
-  CrossScrollDesign({
+  const CrossScrollDesign({
+    this.reverse = false,
     this.padding,
     this.physics,
-    this.clipBehavior = Clip.hardEdge,
+    this.clipBehavior,
     this.restorationId,
-    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
+    this.keyboardDismissBehavior,
   });
-
-
 
   /// The amount of space by which to inset the child.
   final EdgeInsetsGeometry? padding;
+  final bool reverse;
 
   /// How the scroll view should respond to user input.
   ///
@@ -25,11 +25,11 @@ class CrossScrollDesign {
   /// {@macro flutter.material.Material.clipBehavior}
   ///
   /// Defaults to [Clip.hardEdge].
-  final Clip clipBehavior;
+  final Clip? clipBehavior;
 
   /// {@macro flutter.widgets.scrollable.restorationId}
   final String? restorationId;
 
   /// {@macro flutter.widgets.scroll_view.keyboardDismissBehavior}
-  final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
+  final ScrollViewKeyboardDismissBehavior? keyboardDismissBehavior;
 }

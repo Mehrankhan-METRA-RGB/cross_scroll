@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-import 'cross_scroll_bar.dart';
 import 'cross_scroll_decor.dart';
+import 'cross_scroll_track.dart';
 
 ///This code has been design by [Mehran Ullah]
-///email: m.jan9396@gmail.com, m.jan9396@hotmail.com
+///email: m.jan9396@gmail.com,
 
 // class Thumb {
 //   Thumb({this.currentPosition, this.visibility = true, this.thumbWidth});
@@ -34,8 +34,8 @@ class CrossScroll extends StatefulWidget {
       this.dimColor,
       this.normalColor,
       this.hoverColor,
-      this.horizontalBar = const CrossScrollBar(),
-      this.verticalBar = const CrossScrollBar(),
+      this.horizontalBar = const CrossScrollTrack(),
+      this.verticalBar = const CrossScrollTrack(),
       Key? key})
       : super(key: key);
   final Widget? child;
@@ -73,10 +73,10 @@ class CrossScroll extends StatefulWidget {
   final ScrollController? verticalScrollController;
 
   ///Modify Vertical scroll thumb and track
-  final CrossScrollBar? verticalBar;
+  final CrossScrollTrack? verticalBar;
 
   ///Modify horizontal scroll thumb and track
-  final CrossScrollBar? horizontalBar;
+  final CrossScrollTrack? horizontalBar;
 
   ///Shown this color when you hovered over a thumb
   ///
@@ -178,7 +178,7 @@ class _CrossScrollState extends State<CrossScroll> {
 
 // thumbCurrentPosition=widget.horizontalScrollController?.offset??horizontalScrollController.offset;
 
-    ///Here i comment out (width != previousWidth || height != previousHeight) beacuse of below issue
+    ///Here i comment out (width != previousWidth || height != previousHeight) because of the issue
     /// https://github.com/Mehrankhan-METRA-RGB/cross_scroll/issues/5#issue-1596328845
 //     if (width != previousWidth || height != previousHeight) {
     Future.delayed(Duration.zero, () {
@@ -193,9 +193,9 @@ class _CrossScrollState extends State<CrossScroll> {
     previousWidth = width!;
     // }
 
-    CrossScrollBar? vBar = widget.verticalBar;
+    CrossScrollTrack? vBar = widget.verticalBar;
     CrossScrollDesign? vStyle = widget.verticalScroll;
-    CrossScrollBar? hBar = widget.horizontalBar;
+    CrossScrollTrack? hBar = widget.horizontalBar;
     CrossScrollDesign? hStyle = widget.horizontalScroll;
     return Scaffold(
       body: Stack(
@@ -537,7 +537,7 @@ class _CrossScrollState extends State<CrossScroll> {
   }
 
   BorderRadiusGeometry _thumbRadius(
-      {required CrossScrollBar bar,
+      {required CrossScrollTrack bar,
       required bool hover,
       required Axis orientation}) {
     return BorderRadius.all(Radius.elliptical(
@@ -547,7 +547,7 @@ class _CrossScrollState extends State<CrossScroll> {
 
   Color _thumbColor(
     BuildContext context, {
-    required CrossScrollBar bar,
+    required CrossScrollTrack bar,
     required bool hover,
     required Axis orientation,
   }) {
@@ -557,7 +557,7 @@ class _CrossScrollState extends State<CrossScroll> {
     Color dimColor = widget.dimColor ?? const Color.fromARGB(159, 24, 24, 24);
 
     if (bar.thumb == ScrollThumb.hoverShow ||
-        bar.track == ScrollTrack.onHover) {
+        bar.track == ScrollTrackBehaviour.onHover) {
       return hover ? widget.hoverColor ?? normalColor : dimColor;
     } else if (bar.thumb == ScrollThumb.alwaysDim) {
       return dimColor;
@@ -577,7 +577,7 @@ class _CrossScrollState extends State<CrossScroll> {
   ///[borderColor]??Colors.black.withOpacity(0.0851);
 
   Widget _scrollTrack(
-      {required CrossScrollBar bar,
+      {required CrossScrollTrack bar,
       required Axis orientation,
       Color? trackColor,
       Color? noColor,
@@ -637,18 +637,18 @@ class _CrossScrollState extends State<CrossScroll> {
 
         ///track bar switch
         switch (bar.track) {
-          case ScrollTrack.onHover:
+          case ScrollTrackBehaviour.onHover:
             return _trackWidget(
               color: _onHoverVerticalTrack ? _trackColor : _noColor,
               borderColor: _onHoverVerticalTrack ? _borderColor : _noColor,
             );
 
-          case ScrollTrack.show:
+          case ScrollTrackBehaviour.show:
             return _trackWidget(
               color: _trackColor,
               borderColor: _borderColor,
             );
-          case ScrollTrack.hidden:
+          case ScrollTrackBehaviour.hidden:
             return _trackWidget(
               color: _noColor,
               borderColor: _noColor,
@@ -657,18 +657,18 @@ class _CrossScrollState extends State<CrossScroll> {
 
       case Axis.horizontal:
         switch (bar.track) {
-          case ScrollTrack.onHover:
+          case ScrollTrackBehaviour.onHover:
             return _trackWidget(
               color: _onHoverHorizontalTrack ? _trackColor : _noColor,
               borderColor: _onHoverHorizontalTrack ? _borderColor : _noColor,
             );
 
-          case ScrollTrack.show:
+          case ScrollTrackBehaviour.show:
             return _trackWidget(
               color: _trackColor,
               borderColor: _borderColor,
             );
-          case ScrollTrack.hidden:
+          case ScrollTrackBehaviour.hidden:
             return _trackWidget(
               color: _noColor,
               borderColor: _noColor,
@@ -678,7 +678,7 @@ class _CrossScrollState extends State<CrossScroll> {
   }
 
   Widget _scrollThumb(
-      {required CrossScrollBar thumb, required Axis orientation}) {
+      {required CrossScrollTrack thumb, required Axis orientation}) {
     bool _isHorizontal = orientation == Axis.horizontal ? true : false;
     bool _trackHover =
         _isHorizontal ? _onHoverHorizontalTrack : _onHoverVerticalTrack;

@@ -4,8 +4,12 @@ class MovableContainer extends StatefulWidget {
   final double height;
   final double width;
   final Axis axis;
+  // final Offset offset;
   MovableContainer(
-      {required this.height, required this.width, this.axis = Axis.horizontal});
+      {required this.height,
+      required this.width,
+      // required this.offset,
+      this.axis = Axis.horizontal});
   @override
   _MovableContainerState createState() => _MovableContainerState();
 }
@@ -13,10 +17,32 @@ class MovableContainer extends StatefulWidget {
 class _MovableContainerState extends State<MovableContainer> {
   double x = 0.0;
   double y = 0.0;
+  late double _height;
+  late double _width;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _height = widget.height;
+    _width = widget.width;
+  }
+
+  @override
+  void didUpdateWidget(covariant MovableContainer oldWidget) {
+    // TODO: implement didUpdateWidget
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget != widget) {
+      setState(() {
+        _height = widget.height;
+        _width = widget.width;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onPanUpdate: (details) {
         setState(() {
           if (widget.axis == Axis.horizontal)
@@ -32,7 +58,7 @@ class _MovableContainerState extends State<MovableContainer> {
                 radius: 12,
                 width: widget.width,
                 height: widget.height,
-                backgroundColor: Colors.lightBlue),
+                backgroundColor: Colors.pink),
           )),
     );
   }

@@ -1,10 +1,13 @@
 import 'dart:math' as math;
 
+import 'package:cross_scroll/cross_scroll.dart';
+import 'package:cross_scroll/src/Components/cross_scroll_thumb.dart';
+import 'package:cross_scroll/src/Infinite/CrossScrollBar/cross_scroll_bar.dart';
 import 'package:cross_scroll/src/Interactive/controller.dart';
 import 'package:flutter/foundation.dart' show clampDouble;
 import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
-import 'package:flutter/widgets.dart';
 import 'package:vector_math/vector_math_64.dart' show Matrix4, Quad, Vector3;
 
 // Examples can assume:
@@ -17,46 +20,13 @@ import 'package:vector_math/vector_math_64.dart' show Matrix4, Quad, Vector3;
 ///
 /// See also:
 ///
-///   * [CrossScrollViewer.builder], whose builder is of this type.
+///   * [DiagonalScrollingBase.builder], whose builder is of this type.
 ///   * [WidgetBuilder], which is similar, but takes no viewport.
-typedef InteractiveViewerWidgetBuilder = Widget Function(
+typedef CrossScrollWidgetBuilder = Widget Function(
     BuildContext context, Quad viewport);
 
-/// A widget that enables pan and zoom interactions with its child.
-///
-/// {@youtube 560 315 https://www.youtube.com/watch?v=zrn7V3bMJvg}
-///
-/// The user can transform the child by dragging to pan or pinching to zoom.
-///
-/// By default, InteractiveViewer clips its child using [Clip.hardEdge].
-/// To prevent this behavior, consider setting [clipBehavior] to [Clip.none].
-/// When [clipBehavior] is [Clip.none], InteractiveViewer may draw outside of
-/// its original area of the screen, such as when a child is zoomed in and
-/// increases in size. However, it will not receive gestures outside of its original area.
-/// To prevent dead areas where InteractiveViewer does not receive gestures,
-/// don't set [clipBehavior] or be sure that the InteractiveViewer widget is the
-/// size of the area that should be interactive.
-///
-/// The [child] must not be null.
-///
-/// See also:
-///   * The [Flutter Gallery's transformations demo](https://github.com/flutter/gallery/blob/master/lib/demos/reference/transformations_demo.dart),
-///     which includes the use of InteractiveViewer.
-///   * The [flutter-go demo](https://github.com/justinmc/flutter-go), which includes robust positioning of an InteractiveViewer child
-///     that works for all screen sizes and child sizes.
-///   * The [Lazy Flutter Performance Session](https://www.youtube.com/watch?v=qax_nOpgz7E), which includes the use of an InteractiveViewer to
-///     performantly view subsets of a large set of widgets using the builder constructor.
-///
-/// {@tool dartpad}
-/// This example shows a simple Container that can be panned and zoomed.
-///
-/// ** See code in examples/api/lib/widgets/interactive_viewer/interactive_viewer.0.dart **
-/// {@end-tool}
 @immutable
-class CrossScrollViewer extends StatefulWidget {
-  /// Create an InteractiveViewer.
-  ///
-  /// The [child] parameter must not be null.
+class DiagonalScrollingBase extends StatefulWidget {
   // CrossScrollViewer({
   //   super.key,
   //   this.clipBehavior = Clip.hardEdge,
@@ -109,7 +79,7 @@ class CrossScrollViewer extends StatefulWidget {
   /// The [builder] parameter must not be null. See its docs for an example of
   /// using it to optimize a large child.
 
-  CrossScrollViewer.builder({
+  DiagonalScrollingBase.builder({
     super.key,
     this.clipBehavior = Clip.hardEdge,
     // @Deprecated(
@@ -121,8 +91,8 @@ class CrossScrollViewer extends StatefulWidget {
     this.boundaryMargin = EdgeInsets.zero,
     // These default scale values were eyeballed as reasonable limits for common
     // use cases.
-    // this.maxScale = 2.5,
-    // this.minScale = 0.8,
+    this.maxScale = 2.5,
+    this.minScale = 0.8,
     this.interactionEndFrictionCoefficient = _kDrag,
     this.onInteractionEnd,
     this.onInteractionStart,
@@ -131,9 +101,14 @@ class CrossScrollViewer extends StatefulWidget {
     this.scaleEnabled = true,
     this.scaleFactor = 200.0,
     this.crossScrollController,
+    this.normalColor,
+    this.hoverColor,
+    this.dimColor,
+    this.horizontalBar,
+    this.verticalBar,
     this.alignment,
-    this.trackpadScrollCausesScale = false,
-    required InteractiveViewerWidgetBuilder this.builder,
+    // this.trackpadScrollCausesScale = false,
+    required CrossScrollWidgetBuilder this.builder,
   })  :
         // assert(minScale > 0),
         assert(interactionEndFrictionCoefficient > 0),
@@ -153,6 +128,23 @@ class CrossScrollViewer extends StatefulWidget {
         ),
         constrained = false;
   // child = null;
+
+  ///Modify Vertical scroll thumb and track
+  final CrossScrollTrack? verticalBar;
+
+  ///Modify horizontal scroll thumb and track
+  final CrossScrollTrack? horizontalBar;
+
+  ///Shown this color when you hovered over a thumb
+  ///
+  ///when [hoverColor] is null and [CrossScrollBar(thumb:ScrollThumb.hoverShow)] then [normalColor] will be assign to [hoverColor] if [normalColor] not null.
+  final Color? hoverColor;
+
+  ///Normal thumb color
+  final Color? normalColor;
+
+  ///dim Color
+  final Color? dimColor;
 
   /// The alignment of the child's origin, relative to the size of the box.
   final Alignment? alignment;
@@ -214,7 +206,7 @@ class CrossScrollViewer extends StatefulWidget {
 
   /// Builds the child of this widget.
   ///
-  /// Passed with the [CrossScrollViewer.builder] constructor.
+  /// Passed with the [DiagonalScrollingBase.builder] constructor.
   ///
   /// {@tool dartpad}
   /// This example shows how to use builder to create a [Table] whose cell
@@ -227,7 +219,7 @@ class CrossScrollViewer extends StatefulWidget {
   /// See also:
   ///
   ///   * [ListView.builder], which follows a similar pattern.
-  final InteractiveViewerWidgetBuilder? builder;
+  final CrossScrollWidgetBuilder? builder;
 
   // /// The child [Widget] that is transformed by InteractiveViewer.
   // ///
@@ -281,7 +273,7 @@ class CrossScrollViewer extends StatefulWidget {
   final bool scaleEnabled;
 
   /// {@macro flutter.gestures.scale.trackpadScrollCausesScale}
-  final bool trackpadScrollCausesScale;
+  // final bool trackpadScrollCausesScale;
 
   /// Determines the amount of scale to be performed per pointer scroll.
   ///
@@ -305,7 +297,7 @@ class CrossScrollViewer extends StatefulWidget {
   /// Defaults to 2.5.
   ///
   /// Cannot be null, and must be greater than zero and greater than minScale.
-  // final double maxScale;
+  final double maxScale;
 
   /// The minimum allowed scale.
   ///
@@ -320,7 +312,7 @@ class CrossScrollViewer extends StatefulWidget {
   ///
   /// Cannot be null, and must be a finite number greater than zero and less
   /// than maxScale.
-  // final double minScale;
+  final double minScale;
 
   /// Changes the deceleration behavior after a gesture.
   ///
@@ -409,7 +401,7 @@ class CrossScrollViewer extends StatefulWidget {
   ///
   ///  * [ValueNotifier], the parent class of TransformationController.
   ///  * [TextEditingController] for an example of another similar pattern.
-  final MatrixController? crossScrollController;
+  final CrossDiagnolController? crossScrollController;
 
   // Used as the coefficient of friction in the inertial translation animation.
   // This value was eyeballed to give a feel similar to Google Photos.
@@ -515,10 +507,14 @@ class CrossScrollViewer extends StatefulWidget {
 
     // Otherwise, return the nearest point on the quad.
     final List<Vector3> closestPoints = <Vector3>[
-      CrossScrollViewer.getNearestPointOnLine(point, quad.point0, quad.point1),
-      CrossScrollViewer.getNearestPointOnLine(point, quad.point1, quad.point2),
-      CrossScrollViewer.getNearestPointOnLine(point, quad.point2, quad.point3),
-      CrossScrollViewer.getNearestPointOnLine(point, quad.point3, quad.point0),
+      DiagonalScrollingBase.getNearestPointOnLine(
+          point, quad.point0, quad.point1),
+      DiagonalScrollingBase.getNearestPointOnLine(
+          point, quad.point1, quad.point2),
+      DiagonalScrollingBase.getNearestPointOnLine(
+          point, quad.point2, quad.point3),
+      DiagonalScrollingBase.getNearestPointOnLine(
+          point, quad.point3, quad.point0),
     ];
     double minDistance = double.infinity;
     late Vector3 closestOverall;
@@ -536,12 +532,13 @@ class CrossScrollViewer extends StatefulWidget {
   }
 
   @override
-  State<CrossScrollViewer> createState() => _CrossScrollViewerState();
+  State<DiagonalScrollingBase> createState() => _DiagonalScrollingBaseState();
 }
 
-class _CrossScrollViewerState extends State<CrossScrollViewer>
+class _DiagonalScrollingBaseState extends State<DiagonalScrollingBase>
     with TickerProviderStateMixin {
   MatrixController? _transformationController;
+  CrossDiagnolController? _crossController;
 
   final GlobalKey _childKey = GlobalKey();
   final GlobalKey _parentKey = GlobalKey();
@@ -804,7 +801,7 @@ class _CrossScrollViewerState extends State<CrossScrollViewer>
     if (_scaleController.isAnimating) {
       _scaleController.stop();
       _scaleController.reset();
-      _scaleAnimation?.removeListener(_onScaleAnimate);
+      // _scaleAnimation?.removeListener(_onScaleAnimate);
       _scaleAnimation = null;
     }
 
@@ -928,7 +925,7 @@ class _CrossScrollViewerState extends State<CrossScrollViewer>
     _referenceFocalPoint = null;
 
     _animation?.removeListener(_onAnimate);
-    _scaleAnimation?.removeListener(_onScaleAnimate);
+    // _scaleAnimation?.removeListener(_onScaleAnimate);
     _controller.reset();
     _scaleController.reset();
 
@@ -975,7 +972,7 @@ class _CrossScrollViewerState extends State<CrossScrollViewer>
         _currentAxis = null;
         return;
       }
-      final double scale = _transformationController!.value.getMaxScaleOnAxis();
+      final double scale = 1;
       final FrictionSimulation frictionSimulation = FrictionSimulation(
           widget.interactionEndFrictionCoefficient * widget.scaleFactor,
           scale,
@@ -989,7 +986,7 @@ class _CrossScrollViewerState extends State<CrossScrollViewer>
                   parent: _scaleController, curve: Curves.decelerate));
       _scaleController.duration =
           Duration(milliseconds: (tFinal * 1000).round());
-      _scaleAnimation!.addListener(_onScaleAnimate);
+      // _scaleAnimation!.addListener(_onScaleAnimate);
       _scaleController.forward();
     }
   }
@@ -998,8 +995,7 @@ class _CrossScrollViewerState extends State<CrossScrollViewer>
   void _receivedPointerSignal(PointerSignalEvent event) {
     final double scaleChange;
     if (event is PointerScrollEvent) {
-      if (event.kind == PointerDeviceKind.trackpad &&
-          !widget.trackpadScrollCausesScale) {
+      if (event.kind == PointerDeviceKind.trackpad) {
         // Trackpad scroll, so treat it as a pan.
         widget.onInteractionStart?.call(
           ScaleStartDetails(
@@ -1106,6 +1102,7 @@ class _CrossScrollViewerState extends State<CrossScrollViewer>
       _controller.reset();
       return;
     }
+
     // Translate such that the resulting translation is _animation.value.
     final Vector3 translationVector =
         _transformationController!.value.getTranslation();
@@ -1124,37 +1121,37 @@ class _CrossScrollViewerState extends State<CrossScrollViewer>
   }
 
   // Handle inertia scale animation.
-  void _onScaleAnimate() {
-    if (!_scaleController.isAnimating) {
-      _currentAxis = null;
-      _scaleAnimation?.removeListener(_onScaleAnimate);
-      _scaleAnimation = null;
-      _scaleController.reset();
-      return;
-    }
-    // final double desiredScale = _scaleAnimation!.value;
-    // final double scaleChange =
-    //     desiredScale / _transformationController!.value.getMaxScaleOnAxis();
-    final Offset referenceFocalPoint = _transformationController!.toScene(
-      _scaleAnimationFocalPoint,
-    );
-    // _transformationController!.value = _matrixScale(
-    //   _transformationController!.value,
-    //   scaleChange,
-    // );
-
-    // While scaling, translate such that the user's two fingers stay on
-    // the same places in the scene. That means that the focal point of
-    // the scale should be on the same place in the scene before and after
-    // the scale.
-    final Offset focalPointSceneScaled = _transformationController!.toScene(
-      _scaleAnimationFocalPoint,
-    );
-    _transformationController!.value = _matrixTranslate(
-      _transformationController!.value,
-      focalPointSceneScaled - referenceFocalPoint,
-    );
-  }
+  // void _onScaleAnimate() {
+  //   if (!_scaleController.isAnimating) {
+  //     _currentAxis = null;
+  //     _scaleAnimation?.removeListener(_onScaleAnimate);
+  //     _scaleAnimation = null;
+  //     _scaleController.reset();
+  //     return;
+  //   }
+  //   // final double desiredScale = _scaleAnimation!.value;
+  //   // final double scaleChange =
+  //   //     desiredScale / _transformationController!.value.getMaxScaleOnAxis();
+  //   final Offset referenceFocalPoint = _transformationController!.toScene(
+  //     _scaleAnimationFocalPoint,
+  //   );
+  //   // _transformationController!.value = _matrixScale(
+  //   //   _transformationController!.value,
+  //   //   scaleChange,
+  //   // );
+  //
+  //   // While scaling, translate such that the user's two fingers stay on
+  //   // the same places in the scene. That means that the focal point of
+  //   // the scale should be on the same place in the scene before and after
+  //   // the scale.
+  //   final Offset focalPointSceneScaled = _transformationController!.toScene(
+  //     _scaleAnimationFocalPoint,
+  //   );
+  //   _transformationController!.value = _matrixTranslate(
+  //     _transformationController!.value,
+  //     focalPointSceneScaled - referenceFocalPoint,
+  //   );
+  // }
 
   void _onTransformationControllerChange() {
     // A change to the CrossScrollController's value is a change to the
@@ -1166,17 +1163,25 @@ class _CrossScrollViewerState extends State<CrossScrollViewer>
   void initState() {
     super.initState();
 
-    _transformationController =
-        widget.crossScrollController ?? MatrixController();
-    _transformationController!.addListener(_onTransformationControllerChange);
+    _transformationController = MatrixController();
+    _transformationController!.addListener(() {
+      _onTransformationControllerChange();
+      // print(
+      //     "Current Offset:${_transformationController?.value.getTranslation()}");
+    });
     _controller = AnimationController(
       vsync: this,
     );
     _scaleController = AnimationController(vsync: this);
+    _crossController = widget.crossScrollController ?? CrossDiagnolController();
+
+    _crossController!.addListener(() {
+      print("THUMB POSITION:${_crossController?.verticalThumbCurrentPosition}");
+    });
   }
 
   @override
-  void didUpdateWidget(CrossScrollViewer oldWidget) {
+  void didUpdateWidget(DiagonalScrollingBase oldWidget) {
     super.didUpdateWidget(oldWidget);
     // Handle all cases of needing to dispose and initialize
     // transformationControllers.
@@ -1185,7 +1190,7 @@ class _CrossScrollViewerState extends State<CrossScrollViewer>
         _transformationController!
             .removeListener(_onTransformationControllerChange);
         _transformationController!.dispose();
-        _transformationController = widget.crossScrollController;
+        // _transformationController = widget.crossScrollController;
         _transformationController!
             .addListener(_onTransformationControllerChange);
       }
@@ -1193,14 +1198,13 @@ class _CrossScrollViewerState extends State<CrossScrollViewer>
       if (widget.crossScrollController == null) {
         _transformationController!
             .removeListener(_onTransformationControllerChange);
-        _transformationController = MatrixController();
         _transformationController!
             .addListener(_onTransformationControllerChange);
       } else if (widget.crossScrollController !=
           oldWidget.crossScrollController) {
         _transformationController!
             .removeListener(_onTransformationControllerChange);
-        _transformationController = widget.crossScrollController;
+        _crossController = widget.crossScrollController;
         _transformationController!
             .addListener(_onTransformationControllerChange);
       }
@@ -1213,7 +1217,7 @@ class _CrossScrollViewerState extends State<CrossScrollViewer>
     _scaleController.dispose();
     _transformationController!
         .removeListener(_onTransformationControllerChange);
-    if (widget.crossScrollController == null) {
+    if (_transformationController == null) {
       _transformationController!.dispose();
     }
     super.dispose();
@@ -1221,34 +1225,79 @@ class _CrossScrollViewerState extends State<CrossScrollViewer>
 
   @override
   Widget build(BuildContext context) {
-    return Listener(
-      key: _parentKey,
-      onPointerSignal: _receivedPointerSignal,
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque, // Necessary when panning off screen.
-        onScaleEnd: _onScaleEnd,
-        onScaleStart: _onScaleStart,
-        onScaleUpdate: _onScaleUpdate,
-        trackpadScrollCausesScale: widget.trackpadScrollCausesScale,
-        trackpadScrollToScaleFactor: Offset(0, -1 / widget.scaleFactor),
-        child: LayoutBuilder(
-          builder: (BuildContext context, BoxConstraints constraints) {
-            final Matrix4 matrix = _transformationController!.value;
-            return _CrossViewerBuilt(
-              childKey: _childKey,
-              clipBehavior: widget.clipBehavior,
-              constrained: widget.constrained,
-              alignment: widget.alignment,
-              matrix: matrix,
-              child: widget.builder!(
-                context,
-                _transformViewportCross(
-                    matrix, Offset.zero & constraints.biggest),
-              ),
-            );
+    Size? size;
+    Size? maxExtent;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      //Current screen size (Viewport)
+      size = _parentKey.currentContext!.size;
+
+      //Max extent of scroll
+      maxExtent = _childKey.currentContext!.size;
+
+      _crossController!
+          .listen(context, _transformationController!, maxExtent!, size!);
+    });
+    _crossController!.keepThumbInRangeWhileResizingScreen();
+    return Stack(
+      alignment: Alignment.topLeft,
+      children: [
+        Listener(
+          key: _parentKey,
+          onPointerSignal: _receivedPointerSignal,
+          child: GestureDetector(
+            behavior:
+                HitTestBehavior.opaque, // Necessary when panning off screen.
+            onScaleEnd: _onScaleEnd,
+            onScaleStart: _onScaleStart,
+            onScaleUpdate: _onScaleUpdate,
+            // trackpadScrollCausesScale: widget.trackpadScrollCausesScale,
+            // trackpadScrollToScaleFactor: Offset(0, -1 / widget.scaleFactor),
+            child: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                final Matrix4 matrix = _transformationController!.value;
+// RepaintBoundary()
+                return _CrossViewerBuilt(
+                  childKey: _childKey,
+                  clipBehavior: widget.clipBehavior,
+                  constrained: widget.constrained,
+                  alignment: widget.alignment,
+                  matrix: matrix,
+                  child: widget.builder!(
+                    context,
+                    _transformViewportCross(
+                        matrix, Offset.zero & constraints.biggest),
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
+
+        ///Vertical TRACK
+        CrossScrollThumb(
+          thumb: widget.verticalBar,
+          axis: Axis.vertical,
+          appearance: TrackAppearance.BOTTOM_RIGHT,
+          position: _crossController?.verticalThumbCurrentPosition,
+          thumbLength: _crossController?.verticalThumbLength ?? 0,
+          onDrag: (DragUpdateDetails a) {
+            _crossController!.onDrag(a, orientation: Axis.vertical);
           },
         ),
-      ),
+
+        ///Horizontal Track
+        CrossScrollThumb(
+          thumb: widget.horizontalBar,
+          appearance: TrackAppearance.BOTTOM_RIGHT,
+          axis: Axis.horizontal,
+          position: _crossController?.horizontalThumbCurrentPosition,
+          thumbLength: _crossController?.horizontalThumbLength ?? 0,
+          onDrag: (DragUpdateDetails a) {
+            _crossController!.onDrag(a, orientation: Axis.horizontal);
+          },
+        ),
+      ],
     );
   }
 }
@@ -1365,7 +1414,7 @@ Quad _getAxisAlignedBoundingBoxWithRotationCross(Rect rect, double rotation) {
     rotationMatrix.transform3(Vector3(rect.right, rect.bottom, 0.0)),
     rotationMatrix.transform3(Vector3(rect.left, rect.bottom, 0.0)),
   );
-  return CrossScrollViewer.getAxisAlignedBoundingBox(boundariesRotated);
+  return DiagonalScrollingBase.getAxisAlignedBoundingBox(boundariesRotated);
 }
 
 // Return the amount that viewport lies outside of boundary. If the viewport
@@ -1381,7 +1430,7 @@ Offset _exceedsByCross(Quad boundary, Quad viewport) {
   Offset largestExcess = Offset.zero;
   for (final Vector3 point in viewportPoints) {
     final Vector3 pointInside =
-        CrossScrollViewer.getNearestPointInside(point, boundary);
+        DiagonalScrollingBase.getNearestPointInside(point, boundary);
     final Offset excess = Offset(
       pointInside.x - point.x,
       pointInside.y - point.y,
@@ -1428,7 +1477,7 @@ Axis? _getPanAxisCross(Offset point1, Offset point2) {
   return x.abs() > y.abs() ? Axis.horizontal : Axis.vertical;
 }
 
-/// This enum is used to specify the behavior of the [CrossScrollViewer] when
+/// This enum is used to specify the behavior of the [DiagonalScrollingBase] when
 /// the user drags the viewport.
 enum PanAxisCross {
   /// The user can only pan the viewport along the horizontal axis.
