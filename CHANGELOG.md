@@ -40,4 +40,10 @@ Removed unidentified errors
 * TODO:
   - When a child widget is updated and its size exceeds that of the normal device size, you will now observe the scroll thumb updating accordingly.
   - New Scroll Widgets is coming soon
-  
+
+## 0.1.0
+* TODO:
+  - Infinite Cross Scroll add in beta version
+  - Added CrossScrollBar widget works with Infinite Scrolling only.
+  - Added Diagonal movement functionality
+    
