@@ -28,19 +28,19 @@ class _CrossScrollBarState extends State<CrossScrollBar> {
   double? horizontalFullSize = 0;
   double? verticalFullSize = 0;
 
-  final _horizontalTrackKey = GlobalKey();
-  final _verticalTrackKey = GlobalKey();
-
-  bool _onHoverHorizontalTrack = false;
-  bool _onHoverVerticalTrack = false;
+  // final _horizontalTrackKey = GlobalKey();
+  // final _verticalTrackKey = GlobalKey();
+  //
+  // bool _onHoverHorizontalTrack = false;
+  // bool _onHoverVerticalTrack = false;
 
   double? horizontalThumbCurrentPosition = 0;
   double? verticalThumbCurrentPosition = 0;
 
   double _horizontalViewPort = 0;
   double _verticalViewPort = 0;
-  double _horizontalMaxExtent = 0.1;
-  double _verticalMaxExtent = 0.1;
+  // double _horizontalMaxExtent = 0.1;
+  // double _verticalMaxExtent = 0.1;
   double _horizontalThumbWidth = 55;
   double _verticalThumbWidth = 55;
 
@@ -48,14 +48,15 @@ class _CrossScrollBarState extends State<CrossScrollBar> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    print("ScrollBar:initState");
+    // print("ScrollBar:initState");
   }
 
   @override
   void didUpdateWidget(covariant CrossScrollBar oldWidget) {
     // TODO: implement didUpdateWidget
     super.didUpdateWidget(oldWidget);
-    print("ScrollBar:didUpdateWidget");
+    // print("ScrollBar:didUpdateWidget");
+
     widget.controller.hCont.addListener(() {
       updateThumbPositionWithScroll(Axis.horizontal);
     });
@@ -68,7 +69,7 @@ class _CrossScrollBarState extends State<CrossScrollBar> {
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    print("ScrollBar:didChangeDependencies");
+    // print("ScrollBar:didChangeDependencies");
   }
 
   @override
@@ -82,6 +83,10 @@ class _CrossScrollBarState extends State<CrossScrollBar> {
         keepThumbInRangeWhileResizingScreen(Axis.vertical);
         keepThumbInRangeWhileResizingScreen(Axis.horizontal);
       });
+    });
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      updateThumbPositionWithScroll(Axis.horizontal);
+      updateThumbPositionWithScroll(Axis.vertical);
     });
     previousHeight = height!;
     previousWidth = width!;
@@ -403,15 +408,15 @@ class _CrossScrollBarState extends State<CrossScrollBar> {
     if (_isHorizontal) {
       ///horizontal
       horizontalFullSize = widget.controller.xPosition.maxScrollExtent;
-      _horizontalMaxExtent = (widget.controller.xPosition.viewportDimension +
-          widget.controller.xPosition.maxScrollExtent);
+      // _horizontalMaxExtent = (widget.controller.xPosition.viewportDimension +
+      //     widget.controller.xPosition.maxScrollExtent);
       _horizontalViewPort = widget.controller.xPosition.viewportDimension;
       _horizontalThumbWidth = _thumbSize(orientation);
     } else {
       ///Vertical
       verticalFullSize = widget.controller.yPosition.maxScrollExtent;
-      _verticalMaxExtent = (widget.controller.yPosition.viewportDimension +
-          widget.controller.yPosition.maxScrollExtent);
+      // _verticalMaxExtent = (widget.controller.yPosition.viewportDimension +
+      //     widget.controller.yPosition.maxScrollExtent);
       _verticalViewPort = widget.controller.yPosition.viewportDimension;
       _verticalThumbWidth = _thumbSize(orientation);
     }

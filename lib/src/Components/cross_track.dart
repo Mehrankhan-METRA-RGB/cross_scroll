@@ -61,6 +61,7 @@ class _CrossTrackState extends State<CrossTrack> {
           : null,
       child: GestureDetector(
         onDoubleTapDown: widget.onTrackClick,
+        behavior: HitTestBehavior.opaque,
         child: Container(
           padding: EdgeInsets.symmetric(
               vertical: isHorizontal ? widget.padding : 0,

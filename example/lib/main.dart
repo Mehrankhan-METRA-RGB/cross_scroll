@@ -34,34 +34,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home:
-          // Stack(
-          //   children: [
-          //     Positioned(
-          //         right: 0,
-          //         child: SizedBox(
-          //             height: MediaQuery.of(context).size.height,
-          //             width: 50,
-          //             child: MovableContainer(
-          //               width: 30,
-          //               height: 200,
-          //               axis: Axis.vertical,
-          //             ))),
-          //     Positioned(
-          //         bottom: 0,
-          //         child: SizedBox(
-          //             height: 50,
-          //             width: MediaQuery.of(context).size.width,
-          //             child: MovableContainer(
-          //               width: 100,
-          //               height: 50,
-          //               axis: Axis.horizontal,
-          //             )))
-          //   ],
-          // )
-          // Example(),
-
-          CrossScrollBar(
+      home: CrossScrollBar(
         controller: controller,
         child: InfiniteCrossScroll(
           maxRows: 10,
@@ -76,110 +49,7 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
       ),
-
-      //     Stack(
-      //   children: [
-      //     CrossScrollBar(
-      //       controller: controller,
-      //       child: CrossScrollInfinite(
-      //         maxRows: 10,
-      //         maxColumns: 10,
-      //         controller: controller,
-      //         cellSize: const Size(150, 150),
-      //         builder: (context, vicinity) => Container(
-      //           height: 150,
-      //           width: 150,
-      //           color: Color.fromARGB(255, Random().nextInt(255),
-      //               Random().nextInt(255), Random().nextInt(255)),
-      //         ),
-      //       ),
-      //     ),
-      //     ElevatedButton(
-      //         onPressed: () {
-      //           controller.animateXTo(20,
-      //               duration: const Duration(seconds: 1), curve: Curves.linear);
-      //           controller.animateYTo(20,
-      //               duration: const Duration(seconds: 1), curve: Curves.linear);
-      //           // controller.jumpYTo(130);
-      //         },
-      //         child: const Text("JUMP"))
-      //   ],
-      // ),
     );
-  }
-}
-
-class Example extends StatelessWidget {
-  Example({Key? key}) : super(key: key);
-  final random = Random();
-  @override
-  Widget build(BuildContext context) {
-    final List<Color?> rowColors = [
-      Colors.blue[100],
-      Colors.green[100],
-      Colors.orange[100],
-      Colors.pink[100],
-      Colors.purple[100],
-    ];
-    return Scaffold(
-        body: DiagonalCrossScroll.builder(
-      ///Optional
-      // normalColor: Colors.blue,
-      ///Optional
-      // hoverColor: Colors.red,
-      ///Optional
-      // dimColor: Colors.red.withOpacity(0.4),
-      ///design track and thumb
-      // verticalBar: const CrossScrollBar(),
-      // horizontalBar: const CrossScrollBar(),
-
-      child: Column(
-        children: [
-          for (var j = 1; j < 10; j++)
-            Row(
-              children: [
-                for (var i = 1; i < 10; i++)
-                  Container(
-                      margin: const EdgeInsets.all(2),
-                      width: 500,
-                      height: 500,
-
-                      ///get random color for container
-                      color: Color.fromARGB(255, random.nextInt(255),
-                          random.nextInt(255), random.nextInt(255))),
-              ],
-            )
-        ],
-      ),
-
-      // DataTable(
-      //   columns: List<DataColumn>.generate(
-      //     60, // Number of columns
-      //     (int index) => DataColumn(
-      //       label: Text('Column ${index + 1}'),
-      //     ),
-      //   ),
-      //   rows: List<DataRow>.generate(
-      //     100, // Number of rows
-      //     (int rowIndex) => DataRow(
-      //       color: MaterialStateProperty.resolveWith<Color>(
-      //         (Set<MaterialState> states) {
-      //           return rowColors[rowIndex % rowColors.length]!;
-      //         },
-      //       ),
-      //       cells: List<DataCell>.generate(
-      //         60, // Number of cells in each row
-      //         (int cellIndex) => DataCell(
-      //           Text(
-      //               'Data $cellIndex, Row $rowIndex'), // Replace with your dummy data
-      //         ),
-      //       ),
-      //     ),
-      //   ),
-      //
-      //
-      // ),
-    ));
   }
 }
 
