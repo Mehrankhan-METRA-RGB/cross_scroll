@@ -182,12 +182,14 @@ class _CrossScrollState extends State<CrossScroll> {
     /// https://github.com/Mehrankhan-METRA-RGB/cross_scroll/issues/5#issue-1596328845
 //     if (width != previousWidth || height != previousHeight) {
     Future.delayed(Duration.zero, () {
-      setState(() {
-        initializeControllerValues(Axis.vertical);
-        initializeControllerValues(Axis.horizontal);
-        keepThumbInRangeWhileResizingScreen(Axis.vertical);
-        keepThumbInRangeWhileResizingScreen(Axis.horizontal);
-      });
+      if (mounted) {
+        setState(() {
+          initializeControllerValues(Axis.vertical);
+          initializeControllerValues(Axis.horizontal);
+          keepThumbInRangeWhileResizingScreen(Axis.vertical);
+          keepThumbInRangeWhileResizingScreen(Axis.horizontal);
+        });
+      }
     });
     previousHeight = height!;
     previousWidth = width!;
